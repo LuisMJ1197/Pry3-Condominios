@@ -1,0 +1,19 @@
+
+html, body { height: 100%; }
+body { 
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+    --indigo-dye: hsla(209, 77%, 23%, 1);
+    --lemon-meringue: hsla(48, 83%, 89%, 1);
+    --orange-yellow-crayola: hsla(47, 87%, 66%, 1);
+    --sandy-brown: hsla(28, 83%, 61%, 1);
+    --orange-soda: hsla(10, 94%, 60%, 1);
+    --light-gray: hsla(315, 10%, 84%, 1);
+    --gunmetal: hsla(196, 53%, 17%, 1);
+    --dark-cyan: hsla(181, 81%, 31%, 1);
+    --carrot-orange: hsla(35, 84%, 54%, 1);
+    --carnelian: hsla(3, 73%, 38%, 1);
+}

@@ -1,0 +1,126 @@
+<app-header-vertical></app-header-vertical>
+<div class="background">
+    <div class="config-container">
+        <div class="config-side">
+            <div class="info">
+                <div class="phase-container">
+                    <div class="phase" [ngClass]="{'phase-active': activePhase >= 0}"></div>
+                    <div class="phase" [ngClass]="{'phase-active': activePhase >= 1}"></div>
+                    <div class="phase" [ngClass]="{'phase-active': activePhase >= 2}"></div>
+                </div>
+                <div class="phase-view" *ngIf = "activePhase == 0">
+                    <div class="phase-explanation">
+                        <div class="phase-header">Tamaño del terreno</div>
+                        <div class="phase-p">Seleccione el tamaño del terreno</div>
+                    </div>
+                    <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedSize">
+                        <mat-radio-button *ngFor="let size of sizes" [value]="size" 
+                            [checked]="selectedSize == size" (change)="drawGround(size, true)">
+                            {{size}} m<sup>2</sup>
+                        </mat-radio-button>
+                    </mat-radio-group>
+                    <button class="button next-button" (click)="nextPhase()">
+                        <span>Siguiente</span>
+                    </button>
+                </div>
+                <div class="phase-view" *ngIf = "activePhase == 1">
+                    <div class="phase-explanation">
+                        <div class="phase-header">Primer piso</div>
+                        <div class="phase-p">Seleccione las dimensiones del primer piso</div>
+                    </div>
+                    <div class="floors">
+                        <div class="first-floor">
+                            <h3>
+                                Ancho
+                            </h3>
+                            <div class="sizeSelector">
+                                <mat-slider 
+                                    min="1" 
+                                    step="1"
+                                    max="{{round(ground.getWidth())}}"
+                                    value="{{firstFloor.getWidth()}}" 
+                                    thumbLabel
+                                    [displayWith]="formatLabel"
+                                    (input)="changeFirstFloorWidth($event.value)">
+                                </mat-slider>
+                                <h4>{{firstFloor.getWidth()}}m</h4>
+                            </div>
+                            <h3>
+                                Alto
+                            </h3>
+                            <div class="sizeSelector">
+                                <mat-slider 
+                                    min="1" 
+                                    step="1"
+                                    max="{{round(ground.getHeight())}}" 
+                                    value="{{firstFloor.getHeight()}}" 
+                                    thumbLabel
+                                    [displayWith]="formatLabel"
+                                    (input)="changeFirstFloorHeight($event.value)">
+                                </mat-slider>
+                                <h4>{{firstFloor.getHeight()}}m</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button back-button" (click)="backPhase()">
+                        <span>Atrás</span>
+                    </button>
+                    <button class="button next-button" (click)="nextPhase()">
+                        <span>Siguiente</span>
+                    </button>
+                </div>
+                <div class="phase-view" *ngIf = "activePhase == 2">
+                    <div class="phase-explanation">
+                        <div class="phase-header">Segundo piso</div>
+                        <div class="phase-p">Seleccione si quiere segundo piso y las dimensiones de este</div>
+                    </div>
+                    <mat-checkbox class="checkbox" [(ngModel)]="secondFloorSelected" (change)="changeChecked($event.checked)" > ¿Segundo piso? </mat-checkbox>
+                    <div class="floors">
+                        <div class="first-floor">
+                            <h3>
+                                Ancho
+                            </h3>
+                            <div class="sizeSelector">
+                                <mat-slider 
+                                    min="1" 
+                                    step="1"
+                                    max="{{round(firstFloor.getWidth())}}" 
+                                    thumbLabel
+                                    [displayWith]="formatLabel"
+                                    (input)="changeSecondFloorWidth($event.value)"
+                                    [disabled]="!secondFloorSelected">
+                                </mat-slider>
+                                <h4>{{secondFloor.getWidth()}}m</h4>
+                            </div>
+                            <h3>
+                                Alto
+                            </h3>
+                            <div class="sizeSelector">
+                                <mat-slider 
+                                    min="1" 
+                                    step="1"
+                                    max="{{round(firstFloor.getHeight())}}" 
+                                    thumbLabel
+                                    [displayWith]="formatLabel"
+                                    (input)="changeSecondFloorHeight($event.value)"
+                                    [disabled]="!secondFloorSelected">
+                                </mat-slider>
+                                <h4>{{secondFloor.getHeight()}}m</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="button back-button" (click)="backPhase()">
+                        <span>Atrás</span>
+                    </button>
+                    <button class="button next-button" (click)="endInit()">
+                        <span>Terminar</span>
+                    </button>
+                </div>
+            </div>     
+        </div>
+        <div class="canvas-side">
+            <canvas #canvas class="canvas"></canvas>
+            <canvas #ghostcanvas class="canvas" style="display: none;"></canvas>
+        </div>
+    </div>
+</div>

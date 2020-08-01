@@ -1,0 +1,50 @@
+
+::ng-deep .mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: var(--dark-cyan) !important;   /*inner circle color change*/
+}
+
+::ng-deep .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+   border-color:var(--dark-cyan) !important; /*outer ring color change*/
+}
+
+// Mat Slider
+
+/* CSS to change Default/'Accent' color */
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: blue; /*replace with your color*/
+}
+
+::ng-deep .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: skyblue;  /*replace with your color*/
+}
+
+/* CSS to change 'Primary' color */
+
+::ng-deep .mat-slide-toggle.mat-primary.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: green;
+}
+
+::ng-deep .mat-slide-toggle.mat-primary.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: #ff99ff;
+}
+
+/* CSS to change 'Warn' color */
+
+::ng-deep .mat-slide-toggle.mat-warn.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: red;
+}
+
+::ng-deep .mat-slide-toggle.mat-warn.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: #ffe066;
+}
+
+::ng-deep .mat-accent .mat-slider-thumb {
+    background-color: var(--dark-cyan);
+} 
+::ng-deep .mat-accent .mat-slider-thumb-label {
+    background-color: var(--dark-cyan);
+} 
+::ng-deep .mat-accent .mat-slider-track-fill {
+    background-color: var(--dark-cyan);
+} 
