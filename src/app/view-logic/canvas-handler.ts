@@ -1,7 +1,7 @@
 import { ElementRef } from '@angular/core';
-import { IDragable } from '../logic/drawing/idragable';
 import { Drawable } from '../logic/drawing/drawable';
 import { CanvasMouseEventListener } from './canvas-mouse-event-listener';
+import { Dimention } from '../logic/generalSettings/dimention';
 
 export class CanvasHandler {
     REFRESH_INTERVAL: number = 20;
@@ -14,10 +14,19 @@ export class CanvasHandler {
     ctx: CanvasRenderingContext2D;
     canvasHeight: number;
     canvasWidth: number;
-    objectListening: Drawable;
-    listening: boolean = false;
+    private objectListening: Drawable;
+    private listening: boolean = false;
+    hasMove: boolean = false;
     static canvasHandler: CanvasHandler;
 
+    isListening(): boolean {
+        return this.listening;
+    }
+
+    getObjectListening(): Drawable {
+        return this.objectListening;
+    }
+    
     constructor(private canvas: ElementRef<HTMLCanvasElement>, private ghostcanvas: ElementRef<HTMLCanvasElement>, private mouseListener: CanvasMouseEventListener) {
         CanvasHandler.canvasHandler = this;
         this.ctx = this.canvas.nativeElement.getContext('2d');
@@ -30,13 +39,12 @@ export class CanvasHandler {
         this.ghostcanvas.nativeElement.height = this.canvasHeight;
         this.canvas.nativeElement.onmousedown = this.myDown;
         this.canvas.nativeElement.onmouseup = this.myUp;
+        this.canvas.nativeElement.onmousemove = this.myMove;
         this.canvas.nativeElement.onselectstart = function () { return false; }
     }
 
     setObjectListening(objectListening: Drawable) {
-        if (this.objectListening != null) this.objectListening.isSelected = false;
-        this.objectListening = objectListening;
-        this.objectListening.isSelected = true;
+        this.setListening(objectListening);
     }
 
     getCenter(width: number, height: number): number[] {
@@ -57,19 +65,36 @@ export class CanvasHandler {
         CanvasHandler.canvasHandler.my = e.clientY - rect.top;
     }
 
-    myDown(e: MouseEvent) {
-        if (CanvasHandler.canvasHandler.listening) {
+    setListening(object: Drawable) {
+        this.objectListening = object;
+        this.listening = object != null;
+    }
+
+    verifiesMovement(e: MouseEvent) {
+        if (CanvasHandler.canvasHandler.objectListening != null) {
             CanvasHandler.canvasHandler.getMouse(e);
             CanvasHandler.canvasHandler.objectListening.draw(CanvasHandler.canvasHandler.gtcx);
             var object = CanvasHandler.canvasHandler.gtcx.getImageData(CanvasHandler.canvasHandler.mx, CanvasHandler.canvasHandler.my, 1, 1);
-            var index = (CanvasHandler.canvasHandler.mx + CanvasHandler.canvasHandler.my * object.width) * 4;
+            if (object.data[3] > 0 || CanvasHandler.canvasHandler.isDrag) {
+                CanvasHandler.canvasHandler.canvas.nativeElement.parentElement.style.cursor = 'move';
+            } else {
+                CanvasHandler.canvasHandler.canvas.nativeElement.parentElement.style.cursor = 'default';
+            }
+            CanvasHandler.canvasHandler.clearCanvas(CanvasHandler.canvasHandler.gtcx);
+        }
+    }
+
+    myDown(e: MouseEvent) {
+        if (CanvasHandler.canvasHandler.listening && CanvasHandler.canvasHandler.objectListening != null) {
+            CanvasHandler.canvasHandler.getMouse(e);
+            CanvasHandler.canvasHandler.objectListening.draw(CanvasHandler.canvasHandler.gtcx);
+            var object = CanvasHandler.canvasHandler.gtcx.getImageData(CanvasHandler.canvasHandler.mx, CanvasHandler.canvasHandler.my, 1, 1);
+            CanvasHandler.canvasHandler.objectListening.calculateDxDy();
             if (object.data[3] > 0) {
-                CanvasHandler.canvasHandler.offsetx = CanvasHandler.canvasHandler.mx - CanvasHandler.canvasHandler.objectListening.getX();
-                CanvasHandler.canvasHandler.offsety = CanvasHandler.canvasHandler.my - CanvasHandler.canvasHandler.objectListening.getY();
-                CanvasHandler.canvasHandler.objectListening.setX(CanvasHandler.canvasHandler.mx - CanvasHandler.canvasHandler.offsetx);
-                CanvasHandler.canvasHandler.objectListening.setY(CanvasHandler.canvasHandler.my - CanvasHandler.canvasHandler.offsety);
+                CanvasHandler.canvasHandler.offsetx = CanvasHandler.canvasHandler.mx - CanvasHandler.canvasHandler.objectListening.getDX();
+                CanvasHandler.canvasHandler.offsety = CanvasHandler.canvasHandler.my - CanvasHandler.canvasHandler.objectListening.getDY();
                 CanvasHandler.canvasHandler.isDrag = true;
-                CanvasHandler.canvasHandler.canvas.nativeElement.onmousemove = CanvasHandler.canvasHandler.myMove;
+                CanvasHandler.canvasHandler.mouseListener.registerChange(CanvasHandler.canvasHandler.objectListening);
             }
             CanvasHandler.canvasHandler.clearCanvas(CanvasHandler.canvasHandler.gtcx);
         }
@@ -77,17 +102,46 @@ export class CanvasHandler {
 
     myUp(e: MouseEvent) {
         CanvasHandler.canvasHandler.isDrag = false;
-        CanvasHandler.canvasHandler.canvas.nativeElement.onmousemove = null;
+        if (CanvasHandler.canvasHandler.hasMove) {
+            CanvasHandler.canvasHandler.hasMove = false;
+        }
     }
 
     myMove(e: MouseEvent) {
+        CanvasHandler.canvasHandler.verifiesMovement(e);
         if (CanvasHandler.canvasHandler.isDrag){
+            CanvasHandler.canvasHandler.hasMove = true;
             CanvasHandler.canvasHandler.getMouse(e);
             var x = CanvasHandler.canvasHandler.mx - CanvasHandler.canvasHandler.offsetx;
             var y = CanvasHandler.canvasHandler.my - CanvasHandler.canvasHandler.offsety;
-            CanvasHandler.canvasHandler.objectListening.setX(x);
-            CanvasHandler.canvasHandler.objectListening.setY(y);
+            CanvasHandler.canvasHandler.objectListening.setX((x - CanvasHandler.canvasHandler.objectListening.getBaseFloor().getDX()) / Dimention.meterPixelSize);
+            CanvasHandler.canvasHandler.objectListening.setY((y - CanvasHandler.canvasHandler.objectListening.getBaseFloor().getDY()) / Dimention.meterPixelSize);
             CanvasHandler.canvasHandler.mouseListener.refresh();  
         }
     }
+
+    drawGrid () {
+        let s = 24;
+        let nX = Math.floor(this.canvasWidth)
+        let nY = Math.floor(this.canvasHeight)
+        let pX = -12
+        let pY = -12
+        let pL = Math.ceil(pX / 2) - 0.5
+        let pT = Math.ceil(pY / 2) - 0.5
+        let pR = this.canvasWidth - nX * s - pL
+        let pB = this.canvasHeight - nY * s - pT
+        this.ctx.lineWidth = 1;
+        this.ctx.strokeStyle = 'lightgrey';
+        this.ctx.beginPath()
+        for (var x = pL; x <= this.canvasWidth - pR; x += s) {
+           this.ctx.moveTo(x, pT);
+           this.ctx.lineTo(x, this.canvasHeight - pB);
+        }
+        for (var y = pT; y <= this.canvasHeight - pB; y += s) {
+           this.ctx.moveTo(pL, y);
+           this.ctx.lineTo(this.canvasWidth - pR, y);
+        }
+        this.ctx.stroke();
+     }
+
 }

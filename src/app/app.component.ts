@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Color } from './logic/generalSettings/color';
+import { Resource } from './logic/generalSettings/resource';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +9,6 @@ import { Color } from './logic/generalSettings/color';
 export class AppComponent {
   title = 'Pry3-Condominios';
   constructor() {
-    Color.init();
+    Resource.init();
   }
 }

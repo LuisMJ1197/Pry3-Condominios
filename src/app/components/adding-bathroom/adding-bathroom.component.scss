@@ -1,0 +1,69 @@
+.phase-explanation {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding-right: 24px;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+}
+
+.sizeSelector {
+    width: 96%;
+    margin-left: 2%;
+    margin-top: 0;
+    display: flex;
+    vertical-align: middle;
+}
+
+.sizeSelector ~ .sizeSelector {
+    margin-top: -10px;
+}
+
+.sizeSelector > .mat-slider {
+    flex: 3;
+}
+
+.sizeSelector > h4 {
+    text-align: left;
+    flex: 1;
+    margin-top: 10px;
+}
+
+.addbathroompanel {
+    margin-top: 1rem;
+}
+
+::ng-deep.mat-expansion-panel.addbathroompanel,
+::ng-deep.mat-expansion-panel.addbathroompanel:hover,
+::ng-deep.mat-expansion-panel.mat-expanded.addbathroompanel,
+::ng-deep.mat-expansion-panel.mat-expanded.addbathroompanel:hover {
+    background: var(--gunmetal);
+}
+
+.buttons-div {
+    width: 100%;
+    margin-top: 16px;
+}
+
+.button {
+    float: right;
+}
+
+.button.add {
+    background-color: var(--orange-soda);
+}
+
+.button.cancel {
+    margin-right: 16px;
+}
+
+.kind-div {
+    margin-top: 20px !important;
+}
+
+.turn {
+    float: left;
+    color: var(--gunmetal);
+    background-color: white;
+}

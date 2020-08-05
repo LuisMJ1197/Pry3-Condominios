@@ -1,0 +1,61 @@
+
+<mat-expansion-panel class="addroompanel" #addroompanel hideToggle="true" [expanded]="drawingService.isAddingRoom === true" (opened)="startAdding();" (closed)="stopAdding();">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Agregar habitación
+        </mat-panel-title>
+        <mat-icon>{{addroompanel.expanded ? 'close' : 'add'}}</mat-icon>
+    </mat-expansion-panel-header>
+    <div class="phase-explanation">
+        <div class="phase-p">Seleccione el piso al que pertenece</div>
+    </div>
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="addingRoom.floorNumber">
+        <mat-radio-button [value]="1" [checked]="addingRoom.floorNumber == 1"
+            (change)="changeAddingRoomFloor(1)">
+            Primer piso
+        </mat-radio-button>
+        <mat-radio-button [value]="2" [disabled]="!house.hasSecondFloor"
+            [checked]="addingRoom.floorNumber == 2"
+            (change)="changeAddingRoomFloor(2)">
+            Segundo piso
+        </mat-radio-button>
+    </mat-radio-group>
+    <div class="phase-explanation">
+        <div class="phase-p">Seleccione el tipo de habitación</div>
+    </div>
+    <mat-form-field appearance="fill">
+        <mat-label>Tipo de habitación</mat-label>
+        <mat-select class="select-kind" [(ngModel)]="addingRoom.kind" style="color: white;">
+          <mat-option *ngFor="let room of rooms" [value]="room.kind" 
+            style="background-color: var(--gunmetal);">
+            {{room.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    <div class="sizeSelector">
+        <h4>
+            Ancho
+        </h4>
+        <mat-slider min="1" step="0.5" max="{{getFloor(addingRoom.floorNumber).getWidth()}}"
+            value="{{addingRoom.getWidth()}" thumbLabel [displayWith]="formatLabel"
+            (input)="changeAddingRoomWidth($event.value)"
+        >
+        </mat-slider>
+        <h4>{{addingRoom.getWidth()}}m</h4>
+    </div>
+    <div class="sizeSelector">
+        <h4>
+            Alto
+        </h4>
+        <mat-slider min="1" step="0.5" max="{{getFloor(addingRoom.floorNumber).getHeight()}}"
+            value="{{addingRoom.getHeight()}" thumbLabel [displayWith]="formatLabel"
+            (input)="changeAddingRoomHeight($event.value)"
+        >
+        </mat-slider>
+        <h4>{{addingRoom.getHeight()}}m</h4>
+    </div>
+    <div class="buttons-div">
+        <button mat-raised-button class="button add" (click)="addRoom()">Agregar</button>
+        <button mat-raised-button class="button cancel" (click)="stopAdding()">Cancelar</button>
+    </div>
+</mat-expansion-panel>

@@ -1,0 +1,102 @@
+.phase-explanation {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding-right: 24px;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+}
+
+.sizeSelector {
+    width: 96%;
+    margin-left: 2%;
+    margin-top: 0;
+    display: flex;
+    vertical-align: middle;
+}
+
+.sizeSelector ~ .sizeSelector {
+    margin-top: -10px;
+}
+
+.sizeSelector > .mat-slider {
+    flex: 3;
+}
+
+.sizeSelector > h4 {
+    text-align: left;
+    flex: 1;
+    margin-top: 10px;
+}
+
+.addroompanel {
+    margin-top: 1rem;
+}
+
+::ng-deep.mat-expansion-panel.addroompanel,
+::ng-deep.mat-expansion-panel.addroompanel:hover,
+::ng-deep.mat-expansion-panel.mat-expanded.addroompanel,
+::ng-deep.mat-expansion-panel.mat-expanded.addroompanel:hover {
+    background: var(--gunmetal);
+}
+
+::ng-deep.mat-form-field-underline {
+    /*change color of underline*/
+    background-color: var(--orange-soda) !important;
+  } 
+  
+  ::ng-deep.mat-form-field-ripple {
+   /*change color of underline when focused*/
+   background-color: var(--orange-soda) !important;
+   color: var(--orange-soda) !important;
+  }
+// mat-label normal state style
+::ng-deep .mat-form-field-label {
+    color: white;
+    // color: $mainColor!important;
+}
+
+// mat-label focused style
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+    color: var(--orange-soda)!important;
+}
+
+::ng-deep .mat-select-arrow-wrapper {
+    color: green;
+}  
+
+::ng-deep.mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+    color: var(--orange-soda);
+}
+
+::ng-deep.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: var(--orange-soda);
+}
+
+.buttons-div {
+    width: 100%;
+    margin-top: 16px;
+}
+
+.button {
+    float: right;
+}
+
+.button.add {
+    background-color: var(--orange-soda);
+}
+
+.button.cancel {
+    margin-right: 16px;
+}
+
+.kind-div {
+    margin-top: 20px !important;
+}
+
+.turn {
+    float: left;
+    color: var(--gunmetal);
+    background-color: white;
+}

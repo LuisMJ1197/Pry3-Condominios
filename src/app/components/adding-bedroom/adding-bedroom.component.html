@@ -1,0 +1,120 @@
+<mat-expansion-panel class="addpanel" #addpanel hideToggle="true" [expanded]="drawingService.isAddingBedroom === true"
+    (opened)="startAdding();" (closed)="stopAdding();">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Agregar cuarto
+        </mat-panel-title>
+        <mat-icon>{{addpanel.expanded ? 'close' : 'add'}}</mat-icon>
+    </mat-expansion-panel-header>
+    <div class="phase-explanation">
+        <div class="phase-p">Seleccione el piso al que pertenece</div>
+    </div>
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="addingBedroom.floorNumber">
+        <mat-radio-button [value]="1" [checked]="addingBedroom.floorNumber == 1" (change)="changeAddingBedroomFloor(1)">
+            Primer piso
+        </mat-radio-button>
+        <mat-radio-button [value]="2" [disabled]="!house.hasSecondFloor" [checked]="addingBedroom.floorNumber == 2"
+            (change)="changeAddingBedroomFloor(2)">
+            Segundo piso
+        </mat-radio-button>
+    </mat-radio-group>
+    <div class="sizeSelector">
+        <h4>
+            Ancho
+        </h4>
+        <mat-slider 
+            min="1" 
+            step="0.5" 
+            max="{{getFloor(addingBedroom.floorNumber).getWidth()}}"
+            value="{{addingBedroom.getWidth()}" thumbLabel [displayWith]="formatLabel"
+            (input)="changeAddingBedroomWidth($event.value)"
+        >
+        </mat-slider>
+        <h4>{{addingBedroom.getWidth()}}m</h4>
+    </div>
+    <div class=" sizeSelector">
+            <h4>
+                Alto
+            </h4>
+            <mat-slider min="1" step="0.5" max="{{getFloor(addingBedroom.floorNumber).getHeight()}}" value="{{addingBedroom.getHeight()}" thumbLabel [displayWith]="formatLabel"
+            (input)="changeAddingBedroomHeight($event.value)"
+        >
+        </mat-slider>
+        <h4>{{addingBedroom.getHeight()}}m</h4>
+    </div>
+    <mat-expansion-panel class="addpanel"
+        (opened)="startMovingExtra(addingBedroom.closet);" (closed)="stopMovingExtra(addingBedroom.closet);">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Closet
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-checkbox class=" checkbox" [(ngModel)]="addingBedroom.hasCloset" (change)="$event.checked == true ? startMovingExtra(addingBedroom.closet) : stopMovingExtra(addingBedroom.closet)"> ¿Tiene closet? </mat-checkbox>
+        <button mat-raised-button *ngIf="addingBedroom.hasCloset" class="button turn" (click)="rotateExtra(addingBedroom.closet)" [disabled]="!addingBedroom.hasCloset">
+            <mat-icon>rotate_right</mat-icon>
+        </button>
+    </mat-expansion-panel>
+    <mat-expansion-panel class="addpanel"
+        (opened)="startMovingExtra(addingBedroom.bathroom);" (closed)="stopMovingExtra(addingBedroom.bathroom);">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Baño
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-checkbox class=" checkbox" [(ngModel)]="addingBedroom.hasBathroom" (change)="$event.checked == true ? startMovingExtra(addingBedroom.bathroom) : stopMovingExtra(addingBedroom.bathroom)"> ¿Tiene baño? </mat-checkbox>
+        <div class="phase-explanation" *ngIf="addingBedroom.hasBathroom">
+            <div class="phase-p">Seleccione el tipo de baño</div>
+        </div>
+        <mat-radio-group *ngIf="addingBedroom.hasBathroom" class="kind-div" aria-label="Select an option" [(ngModel)]="addingBedroom.bathroom.kind">
+            <mat-radio-button [value]="0" [checked]="addingBedroom.bathroom.kind == 0"
+                (change)="addingBedroom.bathroom.setKind(0)">
+                Baño medio
+            </mat-radio-button>
+            <mat-radio-button [value]="1"
+                [checked]="addingBedroom.bathroom.kind == 1"
+                (change)="addingBedroom.bathroom.setKind(1)">
+                Baño completo
+            </mat-radio-button>
+        </mat-radio-group>
+        <button mat-raised-button class="button turn" *ngIf="addingBedroom.hasBathroom" (click)="rotateExtra(addingBedroom.bathroom)" [disabled]="!addingBedroom.hasBathroom">
+            <mat-icon>rotate_right</mat-icon>
+        </button>
+    </mat-expansion-panel>
+    <mat-expansion-panel class="addpanel"
+        (opened)="startMovingExtra(addingBedroom.balcony);" (closed)="stopMovingExtra(addingBedroom.balcony);">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Balcón
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <mat-checkbox class=" checkbox" [(ngModel)]="addingBedroom.hasBalcony" (change)="$event.checked == true ? startMovingExtra(addingBedroom.balcony) : stopMovingExtra(addingBedroom.balcony)"> ¿Tiene balcón? </mat-checkbox>
+        <div class="sizeSelector" *ngIf="addingBedroom.hasBalcony">
+            <h4>
+                Ancho
+            </h4>
+            <mat-slider 
+                min="1" 
+                step="0.5" 
+                max="{{addingBedroom.getWidth()}}"
+                value="1" thumbLabel [displayWith]="formatLabel"
+                (input)="addingBedroom.balcony.setWidth($event.value)"
+            >
+            </mat-slider>
+            <h4>{{addingBedroom.balcony.getWidth()}}m</h4>
+        </div>
+        <div class=" sizeSelector" *ngIf="addingBedroom.hasBalcony">
+                <h4>
+                    Alto
+                </h4>
+                <mat-slider min="1" step="0.5" max="{{addingBedroom.getHeight()}}" value="0" thumbLabel [displayWith]="formatLabel"
+                (input)="addingBedroom.balcony.setHeight($event.value)"
+            >
+            </mat-slider>
+            <h4>{{addingBedroom.balcony.getHeight()}}m</h4>
+        </div>
+    </mat-expansion-panel>
+<div class="buttons-div">
+    <button mat-raised-button class="button add" (click)="addBedroom()">Agregar</button>
+    <button mat-raised-button class="button cancel" (click)="stopAdding()">Cancelar</button>
+</div>
+</mat-expansion-panel>

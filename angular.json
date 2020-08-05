@@ -24,9 +24,6 @@
             "tsConfig": "tsconfig.app.json",
             "aot": true,
             "assets": [
-              "assets",
-              "assets/terrain",
-              "assets/terrain/grass_terrain_d.jpg",
               "src/favicon.ico",
               "src/assets/images/favicon.png",
               "src/assets/images/logo34x34.png",
@@ -34,7 +31,8 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/assets/fontawesome-free-5.14.0-web/css/all.css"
             ],
             "scripts": []
           },
@@ -99,7 +97,8 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/pink-bluegrey.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/assets/fontawesome-free-5.14.0-web/css/all.css"
             ],
             "scripts": []
           }

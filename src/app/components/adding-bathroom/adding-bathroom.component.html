@@ -1,0 +1,44 @@
+<mat-expansion-panel class="addbathroompanel" #addbathroompanel hideToggle="true" [expanded]="drawingService.isAddingBathroom === true" (opened)="startAdding();" (closed)="stopAdding();">
+    <mat-expansion-panel-header>
+        <mat-panel-title>
+            Agregar baño
+        </mat-panel-title>
+        <mat-icon>{{addbathroompanel.expanded ? 'close' : 'add'}}</mat-icon>
+    </mat-expansion-panel-header>
+    <div class="phase-explanation">
+        <div class="phase-p">Seleccione el piso al que pertenece</div>
+    </div>
+    <mat-radio-group aria-label="Select an option" [(ngModel)]="addingBathroom.floorNumber">
+        <mat-radio-button [value]="1" [checked]="addingBathroom.floorNumber == 1"
+            (change)="changeAddingBathroomFloor(1)">
+            Primer piso
+        </mat-radio-button>
+        <mat-radio-button [value]="2" [disabled]="!house.hasSecondFloor"
+            [checked]="addingBathroom.floorNumber == 2"
+            (change)="changeAddingBathroomFloor(2)">
+            Segundo piso
+        </mat-radio-button>
+    </mat-radio-group>
+    <br/>
+    <div class="phase-explanation">
+        <div class="phase-p">Seleccione el tipo de baño</div>
+    </div>
+    <mat-radio-group class="kind-div" aria-label="Select an option" [(ngModel)]="addingBathroom.kind">
+        <mat-radio-button [value]="0" [checked]="addingBathroom.kind == 0"
+            (change)="addingBathroom.setKind(0)">
+            Baño medio
+        </mat-radio-button>
+        <mat-radio-button [value]="1"
+            [checked]="addingBathroom.kind == 1"
+            (change)="addingBathroom.setKind(1)">
+            Baño completo
+        </mat-radio-button>
+    </mat-radio-group>
+    <div class="buttons-div">
+        <button mat-raised-button class="button add" (click)="addBathroom()">Agregar</button>
+        <button mat-raised-button class="button cancel" (click)="stopAdding()">Cancelar</button>
+    </div>
+    <button mat-raised-button class="button turn" (click)="rotateBathroom()">
+        <mat-icon>rotate_right</mat-icon>
+    </button>
+</mat-expansion-panel>

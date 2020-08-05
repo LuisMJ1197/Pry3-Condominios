@@ -1,9 +1,8 @@
 import { DrawableGround } from '../drawing/drawable-ground';
 import { House } from './house';
-import { IShape } from './ishape';
-import { Dimention } from '../generalSettings/dimention';
+import { ISnapshot } from '../memento/isnapshot';
 
-export class Ground extends DrawableGround implements IShape {
+export class Ground extends DrawableGround {
     private house: House;
 
     constructor(size: number) {
@@ -24,7 +23,15 @@ export class Ground extends DrawableGround implements IShape {
         return this.house;
     }
 
-    genLimits(): void {
-        
+    save(): ISnapshot {
+        return null;
+        //return new GroundSnapshot(this.x, this.y, this.width, this.height);
+    }
+
+    restore(snapshot: ISnapshot): void {
+        this.x = snapshot.getState().x;
+        this.y = snapshot.getState().y;
+        this.width = snapshot.getState().width;
+        this.height = snapshot.getState().height;
     }
 }

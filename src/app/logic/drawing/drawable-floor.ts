@@ -1,12 +1,13 @@
-import { Color } from '../generalSettings/color';
-import { Dimention } from '../generalSettings/dimention';
-import { IDragable } from './idragable';
+import { Resource } from '../generalSettings/resource';
 import { Drawable } from './drawable';
+import { Dimention } from '../generalSettings/dimention';
+import { ObjectConfigurator } from 'src/app/view-logic/object-configurator';
+import { ISnapshot } from '../memento/isnapshot';
 
 export abstract class DrawableFloor extends Drawable {
-    protected backgroundCcolor: string = Color.firstBackgroundColor;
-    protected borderColor: string = Color.firstBorderColor;
-    protected selectedBorderColor: string = Color.selectedBorderColor;
+    protected backgroundCcolor: string = Resource.firstBackgroundColor;
+    protected borderColor: string = Resource.firstBorderColor;
+    protected selectedBorderColor: string = Resource.selectedBorderColor;
     rol: string = "firstFloor";
 
     constructor(width: number, height: number, x: number, y: number) {
@@ -14,24 +15,14 @@ export abstract class DrawableFloor extends Drawable {
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
-        ctx.lineWidth = 3;
+        this.calculateDxDy();
+        ctx.save();
         if (this.rol == "firstFloor") {
-            var pat = ctx.createPattern(Color.firstFloorFill, "repeat");
-            ctx.fillStyle = pat;
+            ObjectConfigurator.configFirstFloor(ctx);
         } else {
-            var pat = ctx.createPattern(Color.secondFloorFill, "repeat");
-            ctx.fillStyle = pat;
+            ObjectConfigurator.configSecondFloor(ctx);
         }
-        ctx.strokeStyle = this.borderColor;
-        if (this.isSelected) {
-            ctx.strokeStyle = this.selectedBorderColor;
-        }
-        ctx.fillRect(this.x, this.y, this.getPixelWidth(), this.getPixelHeight());
-        ctx.shadowColor = this.borderColor;
-        ctx.shadowBlur = 2;
-        ctx.strokeRect(this.x, this.y, this.getPixelWidth(), this.getPixelHeight());
-        ctx.shadowBlur = 0;  
+        ctx.fillRect(this.dx, this.dy, this.getPixelWidth(), this.getPixelHeight());
+        ctx.restore();
     }
-
-    abstract getCenter(): number[];
 }

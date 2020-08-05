@@ -1,0 +1,162 @@
+.design-content {
+    z-index: 1;
+    width: calc(100% - 60px);
+    height: 100%;
+    position: absolute;
+    display: flex;
+}
+
+.tool-content {
+    z-index: 1;
+    flex: 1;
+    height: 100%;
+    background-color: var(--light-gray);
+    overflow: auto;
+}
+
+::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
+    min-width: 0!important;
+    flex: 1;
+    color: var(--gunmetal);
+}
+
+::ng-deep .mat-ink-bar {
+    border: 1px solid var(--gunmetal);
+    border: 1px solid var(--orange-soda);
+}
+.phase-explanation {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding-right: 24px;
+}
+
+.mat-radio-button ~ .mat-radio-button {
+    margin-top: 5px;
+}
+
+.tab-content {
+    padding: 16px;
+}
+
+
+.canvas-side {
+    flex: 2;
+    height: 100%;
+}
+
+.undo-content {
+    width: 88px;
+    height: 42px;
+    position: absolute;
+    top: 10px;
+    margin-left: 10px;
+    display: flex;
+}
+
+.undo-content > .undo, .redo {
+    flex: 1;
+    background-color: white;
+    box-shadow: 1px 1px 1px 1px var(--light-gray);
+    align-content: center;
+    cursor: pointer;
+}
+
+.undo:hover {
+    background-color: var(--light-gray) !important;
+}
+
+.redo:hover {
+    background-color: var(--light-gray);
+}
+
+.redo {
+    margin-left: 5px;
+}
+
+.icon-display {
+    margin: 2px;
+    font-size: 35px;
+    color: var(--dark-cyan);
+}
+
+.water-content {
+    width: 88px;
+    height: 42px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+}
+
+.water-content > .cold, .hot {
+    flex: 1;
+    background-color: rgba($color: #000000, $alpha: 0);
+    align-content: center;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.hot {
+    margin-left: 5px;
+    color: var(--orange-soda);
+}
+
+.cold {
+    color: var(--gunmetal);
+}
+
+.hot > i, .cold > i {
+    font-size: 35px;
+    margin-top: 5px;
+}
+
+.mat-form-field + .mat-form-field {
+    margin-left: 8px;
+  }
+
+::ng-deep.mat-expansion-panel,
+::ng-deep.mat-expansion-panel:hover,
+::ng-deep.mat-expansion-panel.mat-expanded,
+::ng-deep.mat-expansion-panel.mat-expanded:hover {
+  background: var(--orange-soda);
+}
+
+.button.set-principal {
+    margin-top: 16px;
+    background-color: var(--gunmetal);
+    float: right;
+}
+
+.mat-radio-group {
+    display: inline-grid;
+}
+.mat-radio-button ~ .mat-radio-button {
+    margin-top: 16px;
+}
+
+.panel-description {
+    margin-right: 16px;
+}
+
+.buttons-div {
+    width: 100%;
+    margin-top: 16px;
+}
+
+.button {
+    float: right;
+}
+
+.button.add {
+    background-color: var(--gunmetal);
+}
+
+.turn {
+    float: left;
+    color: var(--gunmetal);
+    background-color: white;
+}
+
+.delete-button {
+    float: right;
+}

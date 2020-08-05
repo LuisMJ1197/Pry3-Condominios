@@ -1,11 +1,12 @@
-import { IShape } from './ishape';
 import { DrawableFloor } from '../drawing/drawable-floor';
-import { Drawable } from '../drawing/drawable';
-import { Color } from '../generalSettings/color';
+import { Bedroom } from './bedroom';
+import { Bathroom } from './bathroom';
+import { IconShape } from '../decorator/icon-shape';
+import { Room } from './room';
+import { ISnapshot } from '../memento/isnapshot';
+import { FloorSnapshot } from '../memento/floor-snapshot';
 
-export class Floor extends DrawableFloor implements IShape {
-    private baseFloor: Drawable;
-
+export class Floor extends DrawableFloor {
     constructor(width: number, height: number) {
         super(width, height, 0, 0);
     }
@@ -14,33 +15,18 @@ export class Floor extends DrawableFloor implements IShape {
         return [this.baseFloor.getCenter()[0] + this.width/2, this.baseFloor.getCenter()[1] + this.height/2];
     }
 
-    setArea(size: number) {
-        
+    draw(ctx: CanvasRenderingContext2D):void {
+        super.draw(ctx);
     }
 
-    getBaseFloor() {
-        return this.baseFloor;
+    save(): ISnapshot {
+        return new FloorSnapshot(this, this.x, this.y, this.width, this.height);
     }
 
-    getArea() {
-        return 0;
-    }
-
-    setRol(rol: string) {
-        this.rol = rol;
-        if (this.rol == "secondFloor") {
-            this.backgroundCcolor = Color.secondBackgroundColor;
-        }
-    }
-
-    setBaseFloor(baseFloor: Drawable) {
-        this.baseFloor = baseFloor;
-    }
-
-    genLimits(): void {
-        this.limitLeft = this.baseFloor.getX();
-        this.limitTop = this.baseFloor.getY();
-        this.limitRight = this.baseFloor.getX() + this.baseFloor.getPixelWidth();
-        this.limitBottom = this.baseFloor.getY() + this.baseFloor.getPixelHeight();
+    restore(snapshot: ISnapshot): void {
+        this.x = snapshot.getState().x;
+        this.y = snapshot.getState().y;
+        this.width = snapshot.getState().width;
+        this.height = snapshot.getState().height;
     }
 }

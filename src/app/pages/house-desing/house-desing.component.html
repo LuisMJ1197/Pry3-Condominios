@@ -1,1 +1,242 @@
-<p>house-desing works!</p>
+<app-header-vertical></app-header-vertical>
+<div style="width: calc(100% - 60px); margin-left: 60px;">
+    <div class="design-content">
+        <div class="tool-content">
+            <mat-tab-group (selectedIndexChange)="changeTab($event.value);">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon" style="font-size: 2em;">layers</mat-icon>
+                    </ng-template>
+                    <div class="tab-content">
+                        <mat-accordion>
+                            <mat-expansion-panel (opened)="changeSelectedFloor(1);">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Primer piso
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        {{floorsShowInfo.first ? 'Seleccionado' : ' '}}
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+                                <table style="width: 50%;">
+                                    <tr>
+                                        <td style="font-weight: bold;">Ancho</td>
+                                        <td>{{getFirstFloor().getWidth()}} mts</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Alto</td>
+                                        <td>{{getFirstFloor().getHeight()}} mts</td>
+                                    </tr>
+                                </table>
+                                <div class="phase-explanation" *ngIf="house.hasSecondFloor">
+                                    <div class="phase-p">Seleccione el tipo de escalera</div>
+                                </div>
+                                <mat-radio-group aria-label="Select an option" [(ngModel)]="house.stair.kind" *ngIf="house.hasSecondFloor">
+                                    <mat-radio-button 
+                                        [value]="0"
+                                        [checked]="house.stair.kind == 0">
+                                        Ninguna
+                                    </mat-radio-button>
+                                    <mat-radio-button 
+                                        [value]="1"
+                                        [checked]="house.stair.kind == 1">
+                                        Recta
+                                    </mat-radio-button>
+                                    <mat-radio-button 
+                                        [value]="2"
+                                        [checked]="house.stair.kind == 2">
+                                        En U
+                                    </mat-radio-button>
+                                    <mat-radio-button 
+                                        [value]="3"
+                                        [checked]="house.stair.kind == 3">
+                                        Espiral
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                                <div class="buttons-div">
+                                    <button mat-raised-button class="button add" 
+                                        [disabled]="house.stair.kind == 0"
+                                        (click)="moveStair()">{{drawingService.isMovingStair ? 'Dejar de mover escalera' : 'Mover escalera'}}</button>
+                                </div>
+                                <button mat-raised-button class="button turn" (click)="rotateStair()">
+                                    <mat-icon>rotate_right</mat-icon>
+                                </button>
+                            </mat-expansion-panel>
+                            <mat-expansion-panel [disabled]="!editingGround.getHouse().hasSecondFloor"
+                                (opened)="changeSelectedFloor(2);">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        Segundo piso
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        {{floorsShowInfo.second ? 'Seleccionado' : ' '}}
+                                    </mat-panel-description>
+                                </mat-expansion-panel-header>
+                                <table style="width: 50%;">
+                                    <tr>
+                                        <td style="font-weight: bold;">Ancho</td>
+                                        <td>{{getSecondFloor().getWidth()}} mts</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold;">Alto</td>
+                                        <td>{{getSecondFloor().getHeight()}} mts</td>
+                                    </tr>
+                                </table>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <i class="fa fa-bed fa-2x"></i>
+                    </ng-template>
+                    <div class="tab-content">
+                        <mat-accordion>
+                            <mat-expansion-panel *ngFor="let bedroom of house.getBedrooms()"
+                                (opened)="selectRoom(bedroom);" (closed)="unselectRoom(bedroom)">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        {{house.getName(bedroom)}}
+                                    </mat-panel-title>
+                                    <div class="panel-description">
+                                        {{bedroom.floorNumber == 1 ? 'Primer piso' : 'Segundo piso'}}
+                                        {{bedroom.isMainBedroom ? ' - Principal' : ' '}}
+                                    </div>
+                                </mat-expansion-panel-header>
+                                <button mat-mini-fab color="var(--gunmetal)" class="delete-button" (click)="deleteRoom(bedroom)"> <mat-icon>delete</mat-icon></button>
+                                <table style="width: 50%;">
+                                    <tr>
+                                        <td>Ancho</td>
+                                        <td>{{bedroom.getWidth()}} mts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Alto</td>
+                                        <td>{{bedroom.getHeight()}} mts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>¿Tiene closet?</td>
+                                        <td>{{bedroom.hasCloset ? 'Sí' : 'No'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>¿Tiene balcón?</td>
+                                        <td>{{bedroom.hasBalcony ? 'Sí' : 'No'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>¿Tiene baño?</td>
+                                        <td>{{bedroom.hasBathroom ? 'Sí' : 'No'}}</td>
+                                    </tr>
+                                </table>
+                                <button mat-raised-button class="button set-principal"
+                                    [disabled]="bedroom.isMainBedroom" (click)="setPrincipalBedroom(bedroom);">
+                                    Seleccionar como principal
+                                </button>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                        <app-adding-bedroom></app-adding-bedroom>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <i class="fa fa-bath fa-2x"></i>
+                    </ng-template>
+                    <div class="tab-content">
+                        <mat-accordion>
+                            <mat-expansion-panel *ngFor="let bathroom of house.getBathrooms()"
+                                (opened)="selectRoom(bathroom);" (closed)="unselectRoom(bathroom);">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        {{house.getName(bathroom)}}
+                                    </mat-panel-title>
+                                    <div class="panel-description">
+                                        {{bathroom.floorNumber == 1 ? 'Primer piso' : 'Segundo piso'}}
+                                    </div>
+                                </mat-expansion-panel-header>
+                                <button mat-mini-fab color="var(--gunmetal)" class="delete-button" (click)="deleteRoom(bathroom)"> <mat-icon>delete</mat-icon></button>
+                                <table style="width: 50%;">
+                                    <tr>
+                                        <td>Tipo</td>
+                                        <td>{{bathroom.kind == 0? 'Baño medio' : 'Baño completo'}} mts</td>
+                                    </tr>
+                                </table>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                        <app-adding-bathroom></app-adding-bathroom>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <i class="fas fa-object-group fa-2x"></i>
+                        <!--mat-icon class="example-tab-icon">settings_overscan</mat-icon!-->
+                    </ng-template>
+                    <div class="tab-content">
+                        <mat-accordion>
+                            <mat-expansion-panel *ngFor="let room of house.getRooms()"
+                                (opened)="selectRoom(room);" (closed)="unselectRoom(room);">
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        {{house.getName(room)}} - {{rooms[room.kind - 3].name}}
+                                    </mat-panel-title>
+                                     <div class="panel-description">
+                                        {{room.floorNumber == 1 ? 'Primer piso' : 'Segundo piso'}}
+                                    </div>
+                                </mat-expansion-panel-header>
+                                <button mat-mini-fab color="var(--gunmetal)" class="delete-button" (click)="deleteRoom(room)"> <mat-icon>delete</mat-icon></button>
+                                <table style="width: 50%;">
+                                    <tr>
+                                        <td>Ancho</td>
+                                        <td>{{room.getWidth()}} mts</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Alto</td>
+                                        <td>{{room.getHeight()}} mts</td>
+                                    </tr>
+                                </table>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                        <app-room-manage></app-room-manage>
+                    </div>
+                </mat-tab>
+
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <i class="fa fa-tint fa-2x"></i>
+                    </ng-template>
+                    <div class="tab-content">
+                        <mat-radio-group aria-label="Select an option" [(ngModel)]="house.hasHotWater">
+                            <mat-radio-button [value]="false" [checked]="house.hasHotWater == false">
+                                Servicio de agua fría
+                                <i class="fa fa-tint" style="margin-left: 16px; color: var(--gunmetal);"></i>
+                            </mat-radio-button>
+                            <mat-radio-button [value]="true" [checked]="house.hasHotWater == true">
+                                Servicio de agua fría y caliente
+                                <i class="fa fa-tint" style="margin-left: 16px;  color: var(--gunmetal);"></i>
+                                <i class="fa fa-fire" style="margin-left: 10px;  color: var(--orange-soda);"></i>
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+
+        </div>
+        <div class="canvas-side">
+            <canvas #canvas class="canvas"></canvas>
+            <canvas #ghostcanvas class="canvas" style="display: none;"></canvas>
+            <div class="undo-content" *ngIf="canUndoRedo()">
+                <div class="undo" (click)="undo()">
+                    <mat-icon class="icon-display">undo</mat-icon>
+                </div>
+                <div class="redo" (click)="redo()">
+                    <mat-icon class="icon-display">redo</mat-icon>
+                </div>
+            </div>
+            <div class="water-content">
+                <div class="cold">
+                    <i class="fa fa-tint"></i>
+                </div>
+                <div class="hot" *ngIf="house.hasHotWater">
+                    <i class="fa fa-fire"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
