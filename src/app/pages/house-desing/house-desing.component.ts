@@ -9,12 +9,13 @@ import { BorderedShape } from 'src/app/logic/decorator/bordered-shape';
 import { House } from 'src/app/logic/modeling/house';
 import { Floor } from 'src/app/logic/modeling/floor';
 import { Bedroom } from 'src/app/logic/modeling/bedroom';
-import { AddingBedroomComponent } from 'src/app/components/adding-bedroom/adding-bedroom.component';
 import { IconShape } from 'src/app/logic/decorator/icon-shape';
-import { MatTab, MatTabGroup } from '@angular/material/tabs';
-import { element } from 'protractor';
 import { Room } from 'src/app/logic/modeling/room';
 import { Drawable } from 'src/app/logic/drawing/drawable';
+import { ServerService } from 'src/app/services/server.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-house-desing',
@@ -31,6 +32,9 @@ export class HouseDesingComponent implements OnInit, CanvasMouseEventListener {
   house: House;
   selectedFloor: Floor;
   floorsShowInfo = {"first": true, "second": false};
+  showingProfile: boolean = false;
+  saved: boolean = false;
+  
   rooms: any[] = [
     {
       name: "Sala",
@@ -79,7 +83,7 @@ export class HouseDesingComponent implements OnInit, CanvasMouseEventListener {
   
   ];
 
-  constructor(public drawingService: DrawingService) {    
+  constructor(private router: Router, public drawingService: DrawingService, private server: ServerService, private _snackBar: MatSnackBar, private exitConfirmation: MatDialog) {    
   }
 
   registerChange(object: Drawable) {
@@ -87,6 +91,7 @@ export class HouseDesingComponent implements OnInit, CanvasMouseEventListener {
       return;
     }
     HouseDesingComponent.component.drawingService.snapshotCareTaker.backup(object);
+    this.saved = false;
   }
 
   
@@ -99,6 +104,7 @@ export class HouseDesingComponent implements OnInit, CanvasMouseEventListener {
     this.drawingService.canvasHandler = this.canvasHandler;
     HouseDesingComponent.component = this;
     Dimention.meterPixelSize = 24;
+    Dimention.borderSize = 5;
     this.editingGround = this.drawingService.editingGround;
     this.house = this.editingGround.getHouse();
     this.selectedFloor = this.house.getFirstFloor();
@@ -159,6 +165,8 @@ export class HouseDesingComponent implements OnInit, CanvasMouseEventListener {
         element.kind = Room.BEDROOM;
       }
     });
+    this.drawingService.snapshotCareTaker.backup(this.house);
+    this.saved = false;
   }
 
   moveStair() {
@@ -189,6 +197,7 @@ export class HouseDesingComponent implements OnInit, CanvasMouseEventListener {
   }
 
   deleteRoom(room: Room) {
+    this.saved = false;
     this.drawingService.snapshotCareTaker.backup(this.house);
     room.isSelected = false;
     this.canvasHandler.setListening(null);
@@ -214,14 +223,14 @@ export class HouseDesingComponent implements OnInit, CanvasMouseEventListener {
       .drawSizeLabel(this.canvasHandler.getCTX(), centerXY);
     new BorderedShape(this.editingGround.getHouse().getFirstFloor())
       .draw(this.canvasHandler.getCTX());
-    this.editingGround.getHouse().drawRooms(this.canvasHandler.getCTX(), this.editingGround.getHouse().getFirstFloor().rol);  
+    this.editingGround.getHouse().drawRooms(this.canvasHandler.getCTX(), this.editingGround.getHouse().getFirstFloor().number);  
     if (this.house.hasSecondFloor) {
       this.house.getSecondFloor().calculateDxDy();
     }
     if(this.floorsShowInfo.second || this.drawingService.addingBedroom.floorNumber == 2 || this.drawingService.addingBathroom.floorNumber == 2) {
       new BorderedShape(this.editingGround.getHouse().getSecondFloor())
         .draw(this.canvasHandler.getCTX());
-        this.editingGround.getHouse().drawRooms(this.canvasHandler.getCTX(), this.editingGround.getHouse().getSecondFloor().rol); 
+        this.editingGround.getHouse().drawRooms(this.canvasHandler.getCTX(), this.editingGround.getHouse().getSecondFloor().number); 
     }
     if (this.house.hasStair()) {
       this.house.stair.draw(this.canvasHandler.getCTX());
@@ -250,4 +259,59 @@ export class HouseDesingComponent implements OnInit, CanvasMouseEventListener {
     }
   }
 
+  showProfile() {
+    this.showingProfile = !this.showingProfile;
+  }
+
+  exit() {
+    this.router.navigate(["/designs-page"]);
+  }
+
+  openSnackBar() {
+    this._snackBar.openFromComponent(SnackBarComponentExample, {
+      duration: 3 * 1000,
+    });
+  }
+
+  saveDesign() {
+    this.openSnackBar();
+
+    if (this.editingGround._id == undefined || this.editingGround == null) {
+      this.server.saveDesign(this.editingGround).subscribe(data => {
+        this.editingGround._id = (data as any).data;
+        this.saved = true;
+      });
+    } else {
+      this.server.updateDesign(this.editingGround).subscribe(data => {
+        console.log((data as any).ok);
+        this.saved = true;
+      });
+    }
+  }
 }
+
+
+/**
+ * @title Snack-bar with a custom component
+ */
+@Component({
+  selector: 'save-snack',
+  templateUrl: 'save-snack.html',
+  styles: [`
+    .example-pizza-party {
+      text-align: center;
+      justify-content: center;
+      width: 100%;
+      color: var(--gunmetal);
+    }
+  `],
+})
+export class SnackBarComponentExample {
+  constructor() {}
+}
+
+@Component({
+  selector: 'exit-confirmation',
+  templateUrl: 'exit-confirmation.html',
+})
+export class ExitConfirmationDialog {}

@@ -62,10 +62,6 @@
     color: var(--orange-soda)!important;
 }
 
-::ng-deep .mat-select-arrow-wrapper {
-    color: green;
-}  
-
 ::ng-deep.mat-form-field.mat-focused.mat-primary .mat-select-arrow {
     color: var(--orange-soda);
 }

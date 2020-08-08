@@ -3,14 +3,17 @@ import { Resource } from '../generalSettings/resource';
 import { Dimention } from '../generalSettings/dimention';
 import { Drawable } from './drawable';
 import { ObjectConfigurator } from 'src/app/view-logic/object-configurator';
-import { ISnapshot } from '../memento/isnapshot';
+import { jsonIgnore } from 'json-ignore';
 
 export abstract class DrawableGround extends Drawable {
+    @jsonIgnore()
     protected backgroundCcolor: string = Resource.groundBackgroundColor;
+    @jsonIgnore()
     protected borderColor: string = Resource.groundBorderColor;
+    @jsonIgnore()
     protected showArea: boolean = false;
 
-    constructor(protected size: number, x: number, y: number) {
+    constructor(public size: number, x: number, y: number) {
         super(Math.sqrt(size), Math.sqrt(size), x, y);
     }
 

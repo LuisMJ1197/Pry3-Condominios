@@ -6,5 +6,6 @@ export class FirstFloor extends Floor {
     constructor(width: number, height: number) {
         super(width, height);
         this.backgroundCcolor = Resource.firstBackgroundColor;
+        this.number = 1;
     }
 }

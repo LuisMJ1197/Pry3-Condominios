@@ -104,6 +104,7 @@ export class CanvasHandler {
         CanvasHandler.canvasHandler.isDrag = false;
         if (CanvasHandler.canvasHandler.hasMove) {
             CanvasHandler.canvasHandler.hasMove = false;
+
         }
     }
 
@@ -116,7 +117,7 @@ export class CanvasHandler {
             var y = CanvasHandler.canvasHandler.my - CanvasHandler.canvasHandler.offsety;
             CanvasHandler.canvasHandler.objectListening.setX((x - CanvasHandler.canvasHandler.objectListening.getBaseFloor().getDX()) / Dimention.meterPixelSize);
             CanvasHandler.canvasHandler.objectListening.setY((y - CanvasHandler.canvasHandler.objectListening.getBaseFloor().getDY()) / Dimention.meterPixelSize);
-            CanvasHandler.canvasHandler.mouseListener.refresh();  
+            CanvasHandler.canvasHandler.mouseListener.refresh();
         }
     }
 

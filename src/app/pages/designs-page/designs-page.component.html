@@ -1,0 +1,39 @@
+<app-header></app-header>
+<canvas #canvasdesigns width="112px" height="112px" style="display: none;"></canvas>
+<div class="content">
+    <div class="caption-header">
+        <h2>Diseños de viviendas</h2>
+        <div class="search">
+            <h3>
+                Buscar por tamaño de terreno:
+            </h3>
+            <div class="sizes-checks" style="margin-left: 16px;">
+                <mat-checkbox class="checkbox" [(ngModel)]="checked150" (change)="filterDesigns()" > 150m<sup>2</sup></mat-checkbox>
+                <mat-checkbox class="checkbox" [(ngModel)]="checked200" (change)="filterDesigns()" > 200m<sup>2</sup></mat-checkbox>
+                <mat-checkbox class="checkbox" [(ngModel)]="checked300" (change)="filterDesigns()" > 300m<sup>2</sup></mat-checkbox>
+                <mat-checkbox class="checkbox" [(ngModel)]="checked400" (change)="filterDesigns()" > 400m<sup>2</sup></mat-checkbox>
+                <mat-checkbox class="checkbox" [(ngModel)]="checked500" (change)="filterDesigns()" > 500m<sup>2</sup></mat-checkbox>
+            </div>
+        </div>
+    </div>
+    <div class="design-projects">
+        <div class="design-block" *ngFor="let design of filteredDesigns">
+            <div class="design-block-content">
+                <img style="width: 112px; height: 112px;" src="{{design.image}}" alt="design">
+                <div class="design-prev">
+                    <p class="design-info">{{design.size}}m<sup>2</sup> -
+                        {{design.hasSecondFloor? 'Un piso' : 'Dos pisos'}}</p>
+                    <div class="design-access">
+                        <button mat-flat-button (click)="editDesign(design)">Editar</button>
+                        <button mat-flat-button (click)="delete(design)" style="margin-left: 5px;">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="design-block" (click)="goToDesign()">
+            <div class="design-plus">
+                <i class="fa fa-plus fa-4x"></i>
+            </div>
+        </div>
+    </div>
+</div>

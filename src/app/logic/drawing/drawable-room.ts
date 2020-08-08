@@ -1,13 +1,15 @@
 import { Resource } from '../generalSettings/resource';
 import { Drawable } from './drawable';
 import { ObjectConfigurator } from 'src/app/view-logic/object-configurator';
-import { Dimention } from '../generalSettings/dimention';
-import { Room } from '../modeling/room';
 import { ISnapshot } from '../memento/isnapshot';
+import { jsonIgnore } from 'json-ignore';
 
 export abstract class DrawableRoom extends Drawable {
+    @jsonIgnore()
     protected backgroundCcolor: string = Resource.roomBackgroundColor;
+    @jsonIgnore()
     protected borderColor: string = Resource.roomBorderColor;
+    @jsonIgnore()
     protected selectedBorderColor: string = Resource.selectedBorderColor;
     kind: number = 3;
 

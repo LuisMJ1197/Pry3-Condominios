@@ -21,7 +21,7 @@ export class Bedroom extends Room {
         this.closet = new Closet(this);
         this.bathroom = new Bathroom(0);
         this.bathroom.setBaseFloor(this);
-        this.balcony = new BedroomBalcony(1, 1, Room.BALCONY);
+        this.balcony = new BedroomBalcony(1, 1);
         this.balcony.setBaseFloor(this);
     }
 

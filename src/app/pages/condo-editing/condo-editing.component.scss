@@ -1,0 +1,216 @@
+.content {
+    width: 100%;
+    height: calc(100% - 100px);
+    padding: 16px;
+    padding-top: 66px;
+    position: relative;
+}
+
+.project-info {
+    width: 100%;
+}
+
+form
+{
+  display: block;
+  width: 60%;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #FFF;
+  border: 1px solid var(--gunmetal);
+  border-radius: 5px;
+}
+
+form > div
+{
+  display: inline-block;
+  width: 100%;
+}
+
+form > div > label
+{
+  display: block;
+  padding: 20px 20px 10px;
+  width: 100%;
+  font-family: Source Sans Pro, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--gunmetal);
+  cursor: pointer;
+}
+
+form > div.column-2, form > div.column-3, form > div.column-4 { box-shadow: 1px 1px var(--gunmetal) }
+
+form > div.column-2 { width: 100% }
+form > div.column-3 { width: 33.3333333333% }
+form > div.column-4 { width: 50% }
+
+form > div > label > input
+{
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  height: 27px;
+  line-height: 27px;
+  margin: 5px -5px 0;
+  padding: 7px 5px 3px;
+  border: none;
+  outline: none;
+  border-radius: 3px;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 200;
+  opacity: .85;
+  transition: opacity .3s;
+}
+
+form > div > label > select
+{
+  display: block;
+  width: 100%;
+  margin: 16px 0 6px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-weight: 200;
+  opacity: .85;
+}
+
+form > div > label > input:focus, form > div > label > select:focus
+{
+  opacity: 1;
+}
+
+.condo-projects {
+  height: 100%;
+  width: 100%;
+}
+
+.condo-block {
+  padding: 16px;
+  width: 100%;
+  vertical-align: middle;
+}
+
+.condo-block-content {
+  color: var(--gunmetal);
+  background: white;
+}
+
+.condo-plus {
+  background: var(--gunmetal);
+  color: white;
+  margin-bottom: 35px;
+}
+
+.condo-block-house {
+  height: auto;
+}
+
+.block-house {
+  float: left;
+  width: 10%;
+}
+
+.icon {
+  color: var(--gunmetal);
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  cursor: pointer;
+}
+
+.icon:hover {
+  color: var(--orange-soda);
+}
+
+::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: var(--orange-soda) !important;
+} 
+
+::ng-deep.mat-form-field-ripple {
+ /*change color of underline when focused*/
+ background-color: var(--orange-soda) !important;
+ color: var(--orange-soda) !important;
+}
+// mat-label normal state style
+::ng-deep .mat-form-field-label {
+  color: white;
+  // color: $mainColor!important;
+}
+
+// mat-label focused style
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: var(--orange-soda)!important;
+}
+
+::ng-deep.mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+  color: var(--orange-soda);
+}
+
+::ng-deep.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: var(--orange-soda);
+}
+
+.design-projects {
+  height: 135;
+  width: 100%;
+}
+
+.design-block {
+  width: 130px;
+  height: 130px;
+  float: left;
+  vertical-align: middle;
+  position: relative;
+}
+
+.design-block-content {
+  position: relative;
+  text-align: center;
+  align-items:center;
+  justify-content:center;
+  color: var(--gunmetal);
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  background: var(--gunmetal);
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.design-block-content:hover {
+  background: white;
+}
+
+.selected-design {
+  background-color: wheat;
+}
+
+.buttons-div {
+  width: 100%;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+}
+
+.button {
+  float: right;
+}
+
+.button.add {
+  background-color: var(--orange-soda);
+}
+
+.button.cancel {
+  margin-right: 16px;
+}
+
+.common-areas {
+  position: relative;
+  margin-top: 32px;
+}

@@ -1,0 +1,175 @@
+<app-header></app-header>
+<canvas #canvas style="display: none;" width="112px" height="112px"></canvas>
+<div class="content">
+    <div class="project-info">
+        <h2>Información del condominio</h2>
+        <form>
+            <div class="column-2">
+                <label>
+                    Nombre
+                    <input placeholder="¿Cuál es el nombre del codominio?" tabindex="1" name="name" [(ngModel)]="condoService.condoEditing.name" />
+                </label>
+            </div>
+            <br />
+            <div class="column-3">
+                <label>
+                    Provincia
+                    <select tabindex="2" name="Provincia" [(ngModel)]="condoService.condoEditing.provincia" (change)="changeSelectedProvincia()">
+                        <option *ngFor="let direction of mainservice.directions" [value]="direction.provincia">
+                            {{direction.provincia}}
+                        </option>
+                    </select>
+                </label>
+            </div>
+            <div class="column-3">
+                <label>
+                    Cantón
+                    <select tabindex="3" name="canton" [(ngModel)]="condoService.condoEditing.canton" (change)="changeSelectedCanton()">
+                        <option *ngFor="let canton of selectedCantones" [value]="canton.canton">
+                            {{canton.canton}}
+                        </option>
+                    </select>
+                </label>
+            </div>
+            <div class="column-3">
+                <label>
+                    Distrito
+                    <select tabindex="4" name="distrito" [(ngModel)]="condoService.condoEditing.distrito">
+                        <option *ngFor="let distrito of selectedDistrito" [value]="distrito.distrito">
+                            {{distrito.distrito}}
+                        </option>
+                    </select>
+                </label>
+            </div>
+            <div class="column-2">
+                <label>
+                    Señas
+                    <input placeholder="Escriba las señas" tabindex="5" name="senias" [(ngModel)]="condoService.condoEditing.senias"/>
+                </label>
+            </div>
+            <div class="column-4">
+                <label>
+                    Nombre del contacto
+                    <input placeholder="¿Cuál es el nombre del contacto?" tabindex="6" name="contact" [(ngModel)]="condoService.condoEditing.contactname"/>
+                </label>
+            </div>
+            <div class="column-4">
+                <label>
+                    Numero de teléfono
+                    <input placeholder="¿Cuál es el número del contacto?" tabindex="7" name="phonenumber" [(ngModel)]="condoService.condoEditing.phonenumber"/>
+                </label>
+            </div>
+        </form>
+    </div>
+    <div class="blocks">
+        <h2>Bloques del condominio</h2>
+        <div class="condo-projects">
+            <mat-accordion class="condo-block">
+                <mat-expansion-panel class="condo-block-content" hideToggle="true" *ngFor="let block of condoService.condoEditing.blocks;">
+                    <mat-expansion-panel-header style="color: var(--gunmetal)">
+                        <mat-panel-title style="color: var(--gunmetal)">
+                            Bloque &#8594; {{block.letter}}
+                        </mat-panel-title>
+                        <mat-icon>expand_more</mat-icon>
+                        <mat-panel-description>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="block-house" *ngFor="let house of block.houses" style="color: var(--gunmetal)">
+                        <img style="width: 112px; height: 112px;" src="{{house.image}}">
+                    </div>
+                    <button mat-flat-button style="margin-top: 16px; outline: none; color: white; width: 50%; margin-left: 25%;" (click)="deleteBlock(block)">Eliminar</button>
+                </mat-expansion-panel>
+            </mat-accordion>
+
+            <mat-expansion-panel class="condo-plus" (opened)="isAdding = true" (close)="isAdding = false"
+                [expanded]="isAdding">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Agregar bloque
+                    </mat-panel-title>
+                    <mat-panel-description>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <h3>Bloque &#8594; {{bloques[condoService.condoEditing.blocks.length]}}</h3>
+                <mat-form-field appearance="fill">
+                    <mat-label>Cantidad de casas</mat-label>
+                    <mat-select class="select-kind" [(ngModel)]="selectedCantHouses" style="color: white;">
+                        <mat-option [value]="4" style="background-color: var(--gunmetal);">
+                            4
+                        </mat-option>
+                        <mat-option [value]="5" style="background-color: var(--gunmetal);">
+                            5
+                        </mat-option>
+                        <mat-option [value]="6" style="background-color: var(--gunmetal);">
+                            6
+                        </mat-option>
+                        <mat-option [value]="7" style="background-color: var(--gunmetal);">
+                            7
+                        </mat-option>
+                        <mat-option [value]="8" style="background-color: var(--gunmetal);">
+                            8
+                        </mat-option>
+                        <mat-option [value]="9" style="background-color: var(--gunmetal);">
+                            9
+                        </mat-option>
+                        <mat-option [value]="10" style="background-color: var(--gunmetal);">
+                            10
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill" style="margin-left: 16px;">
+                    <mat-label>Tamaño del terreno</mat-label>
+                    <mat-select class="select-kind" [(ngModel)]="selectedAddingSize" style="color: white;">
+                        <mat-option [value]="150" style="background-color: var(--gunmetal);">
+                            150m<sup>2</sup>
+                        </mat-option>
+                        <mat-option [value]="200" style="background-color: var(--gunmetal);">
+                            200m<sup>2</sup>
+                        </mat-option>
+                        <mat-option [value]="300" style="background-color: var(--gunmetal);">
+                            300m<sup>2</sup>
+                        </mat-option>
+                        <mat-option [value]="400" style="background-color: var(--gunmetal);">
+                            400m<sup>2</sup>
+                        </mat-option>
+                        <mat-option [value]="500" style="background-color: var(--gunmetal);">
+                            500m<sup>2</sup>
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <h3>Escoja el diseño</h3>
+                <div class="design-projects">
+                    <div class="design-block" *ngFor="let design of filterDesignsBySelectedSize()">
+                        <div class="design-block-content" [ngClass]="{'selected-design': selectedDesign == design}"
+                            (click)="selectedDesign = design">
+                            <img style="width: 112px; height: 112px;" src="{{design.image}}" alt="design">
+                        </div>
+                    </div>
+                </div>
+                <div class="buttons-div">
+                    <button mat-raised-button class="button add" (click)="addBlock()"
+                        [disabled]="selectedDesign == null">Agregar</button>
+                    <button mat-raised-button class="button cancel" (click)="stopAddingBlock()">Cancelar</button>
+                </div>
+            </mat-expansion-panel>
+        </div>
+
+        <div class="common-areas">
+            <h2>Áreas comunes</h2>
+            <div class="common-areas">
+                <div style="width: 30%; position: relative; display: flex;" *ngFor="let area of condoService.condoEditing.commonAreas">
+                    <h4 style="flex: 1;">{{commonAreas[area.kind]}}:</h4>
+                    <input style="margin-left: 16px; flex: 1;" type="number" id="quantity" name="quantity" min="0" [(ngModel)]="area.cant">
+                </div>
+            </div>
+        </div>
+
+        <div style="width: 100%; position: relative; margin-top: 16px;">
+            <div class="save-buttons" style="position: absolute; width: 60%; height: 50px; left: 0; right: 0; margin-left: auto; margin-right: auto;">
+                <button mat-flat-button style="width: 45%;">Cancelar</button>
+                <button mat-flat-button style="width: 45%; margin-left: 10%;" class="button add" (click)="save()">Guardar</button>
+            </div>
+        </div>
+        
+    </div>
+</div>

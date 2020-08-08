@@ -149,3 +149,8 @@
     margin-top: 20px;
     margin-left: 16px;
 }
+
+.selectable-row:hover {
+    background-color: lightgray;
+    cursor: pointer;
+}

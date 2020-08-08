@@ -2,7 +2,7 @@ import { Room } from './room';
 
 export class BedroomBalcony extends Room {
 
-    constructor(width: number, height: number, kind: number) {
+    constructor(width: number, height: number) {
         super(width, height, Room.BALCONY);
     }
     

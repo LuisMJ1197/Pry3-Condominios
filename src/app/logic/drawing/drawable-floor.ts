@@ -1,15 +1,16 @@
 import { Resource } from '../generalSettings/resource';
 import { Drawable } from './drawable';
-import { Dimention } from '../generalSettings/dimention';
 import { ObjectConfigurator } from 'src/app/view-logic/object-configurator';
-import { ISnapshot } from '../memento/isnapshot';
+import { jsonIgnore } from 'json-ignore';
 
 export abstract class DrawableFloor extends Drawable {
+    @jsonIgnore()
     protected backgroundCcolor: string = Resource.firstBackgroundColor;
+    @jsonIgnore()
     protected borderColor: string = Resource.firstBorderColor;
+    @jsonIgnore()
     protected selectedBorderColor: string = Resource.selectedBorderColor;
-    rol: string = "firstFloor";
-
+    number = 1;
     constructor(width: number, height: number, x: number, y: number) {
         super(width, height, x, y);
     }
@@ -17,7 +18,7 @@ export abstract class DrawableFloor extends Drawable {
     draw(ctx: CanvasRenderingContext2D): void {
         this.calculateDxDy();
         ctx.save();
-        if (this.rol == "firstFloor") {
+        if (this.number == 1) {
             ObjectConfigurator.configFirstFloor(ctx);
         } else {
             ObjectConfigurator.configSecondFloor(ctx);

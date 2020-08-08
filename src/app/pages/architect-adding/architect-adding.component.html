@@ -1,0 +1,46 @@
+<app-header></app-header>
+<div class="content">
+    <div class="project-info">
+        <h2>Información del arquitecto</h2>
+        <form>
+            <div class="column-2">
+                <label>
+                    Nombre
+                    <input placeholder="Nombre" name="name" tabindex="1" [(ngModel)]="addingArchitect.firstname" />
+                </label>
+            </div>
+            <br/>
+            <div class="column-4">
+                <label>
+                    Primer apellido
+                    <input placeholder="Primer apellido" name="firstname" tabindex="2" [(ngModel)]="addingArchitect.lastname" />
+                </label>
+            </div>
+            <div class="column-4">
+                <label>
+                    Segundo apellido
+                    <input placeholder="Segundo apellido" name="lastname" tabindex="3" [(ngModel)]="addingArchitect.lastname2" />
+                </label>
+            </div>
+            <div class="column-3">
+                <label>
+                    Años de experiencia
+                    <input placeholder="Años de experiencia" name="lastname2" tabindex="4" [(ngModel)]="addingArchitect.experienceyears" />
+                </label>
+            </div>
+            <div class="column-4">
+                <label>
+                    Nivel
+                    <select tabindex="5" name="level" [(ngModel)]="addingArchitect.level">
+                        <option value="Junior">Junior</option>
+                        <option value="Senior1">Senior1</option>
+                        <option value="Senior2">Senior2</option>
+                    </select>
+                </label>
+            </div>
+        </form>
+        <div style="width: 100%; height: 50px; margin-top: 16px; position: relative;">
+            <button mat-button class="save-button" (click)="addArchitect()">Agregar arquitecto</button>
+        </div>
+    </div>
+</div>

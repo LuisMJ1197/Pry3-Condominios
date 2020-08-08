@@ -1,15 +1,16 @@
-import { Drawable } from '../drawing/drawable';
 import { Bedroom } from './bedroom';
-import { Dimention } from '../generalSettings/dimention';
 import { Resource } from '../generalSettings/resource';
 import { Room } from './room';
+import { jsonIgnore } from 'json-ignore';
 
 export class Closet extends Room {
-    baseFloor: Bedroom;
+    @jsonIgnore()
+    baseFloor: Room;
     angle: number = 0;
+    @jsonIgnore()
     size: number[] = [1.5, 0.5];
 
-    constructor(baseFloor: Bedroom) {
+    constructor(baseFloor: Room) {
         super(1.5, 0.5, 0);
         this.baseFloor = baseFloor;
     }

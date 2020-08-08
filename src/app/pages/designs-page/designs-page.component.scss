@@ -1,0 +1,121 @@
+.content {
+    width: 100%;
+    height: calc(100% - 100px);
+    padding: 16px;
+    padding-top: 66px;
+    position: relative;
+}
+
+.caption-header {
+    width: 100%;
+    height: 100px;
+}
+
+.checkbox ~ .checkbox {
+    margin-left: 16px;
+}
+
+// overwrite the checkbox background
+::ng-deep .mat-checkbox-checked .mat-checkbox-background, .mat-checkbox-indeterminate .mat-checkbox-background {
+    background-color: var(--orange-soda) !important;
+  }
+  
+  // overwrite the ripple overlay on hover and click
+  ::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+    background-color: var(--orange-soda) !important;
+  }
+  
+  ::ng-deep .mat-checkbox-checked.mat-primary .mat-checkbox-background, .mat-checkbox-indeterminate.mat-primary .mat-checkbox-background{
+    background: var(--orange-soda)!important;
+  }
+
+  ::ng-deep .mat-checkbox-frame { 
+    border-color: var(--orange-soda)!important;
+    }
+    .search {
+        width: 100%;
+        position: relative;
+    }
+    .search > * {
+        float: left;
+    }
+.design-projects {
+    height: 100%;
+    width: 100%;
+}
+.design-block {
+    padding: 16px;
+    width: 215px;
+    height: 230px;
+    float: left;
+    vertical-align: middle;
+    position: relative;
+}
+
+.design-block-content, .design-plus {
+    position: relative;
+    text-align: center;
+    align-items:center;
+    justify-content:center;
+    color: var(--gunmetal);
+    padding: 16px;
+    width: 100%;
+    height: 100%;
+    background: white;
+    border-radius: 5px;
+    -webkit-box-shadow: 1px 1px 4px 1px rgba(122,122,122,1);
+    -moz-box-shadow: 1px 1px 4px 1px rgba(122,122,122,1);
+    box-shadow: 1px 1px 4px 1px rgba(122,122,122,1);
+}
+
+
+.design-plus {
+    cursor: pointer;
+    background: var(--gunmetal);
+    color: white;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+}
+
+.design-plus > i {
+    margin-top: auto;
+    margin-bottom: auto;
+    top: 50%;
+    position: relative;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.design-prev {
+    padding: 10px;
+    padding-top: 15px;
+    text-align: center;
+    vertical-align: middle;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: lightgray;
+    border-radius: 0 0 5px 5px;
+}
+
+.design-block-content:hover .design-prev {
+    padding-top: 7.5px;
+}
+
+.design-block-content:hover .design-prev .design-info{
+    display: none;
+}
+
+.design-block-content:hover .design-prev .design-access{
+    display: block;
+}
+
+.design-access {
+    display: none;
+}

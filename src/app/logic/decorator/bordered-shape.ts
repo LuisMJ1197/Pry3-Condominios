@@ -1,5 +1,6 @@
 import { ShapeDecorator } from './shape-decorator';
 import { Resource } from '../generalSettings/resource';
+import { Dimention } from '../generalSettings/dimention';
 
 export class BorderedShape extends ShapeDecorator {
     borderColor: string = Resource.firstBorderColor;
@@ -13,6 +14,7 @@ export class BorderedShape extends ShapeDecorator {
 
     drawBorder(ctx: CanvasRenderingContext2D): void {
         ctx.save();
+        ctx.lineWidth = Dimention.borderSize;
         ctx.strokeStyle = this.borderColor;
         ctx.shadowColor = this.borderColor;
         if (this.shape.isSelected) {

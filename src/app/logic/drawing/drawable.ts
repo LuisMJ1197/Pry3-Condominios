@@ -3,21 +3,31 @@ import { Dimention } from '../generalSettings/dimention';
 import { ISnapshot } from '../memento/isnapshot';
 import { IOriginator } from '../memento/ioriginator';
 import { RoomSnapshot } from '../memento/room-snapshot';
+import { jsonIgnore } from 'json-ignore';
+import { IPrototype } from '../prototype/iprototype';
 
 export abstract class Drawable implements IDrawable, IOriginator {
+    @jsonIgnore()
     limitTop: number = 0;
+    @jsonIgnore()
     limitLeft: number = 0;
+    @jsonIgnore()
     limitRight: number = 0;
+    @jsonIgnore()
     limitBottom: number = 0;
+    
     isDragable: boolean = true;
+    @jsonIgnore()
     isSelected: boolean = false;
+    @jsonIgnore()
     dx: number = 0;
+    @jsonIgnore()
     dy: number = 0;
     angle: number = 0;
+    @jsonIgnore()
     baseFloor: Drawable;
 
-    constructor(protected width: number, protected height: number, protected x: number, protected y: number) {
-        
+    constructor(public width: number, public height: number, public x: number, public y: number) {
     }
 
     public getDX(): number {

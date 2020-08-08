@@ -82,13 +82,14 @@ export class House {
         return this.secondFloor;
     }
 
-    drawRooms(ctx: CanvasRenderingContext2D, rol: string): void {
+    drawRooms(ctx: CanvasRenderingContext2D, number: number): void {
+        this.assignFloor();
         this.rooms.forEach(element => {
-            if ((element.baseFloor as Floor).rol == rol) {
-                if (element.kind == Room.BEDROOM && (element.baseFloor as Floor).rol == rol) {
+            if ((element.baseFloor as Floor).number == number) {
+                if (element.kind == Room.BEDROOM) {
                     new IconShape(element).draw(ctx).drawIcon(ctx, element.kind);
                         (element as Bedroom).drawExtras(ctx);
-                } else if (element.kind == Room.SIMPLE_BATHROOM || element.kind == Room.COMPLETE_BATHROOM && (element.baseFloor as Floor).rol == rol) {
+                } else if (element.kind == Room.SIMPLE_BATHROOM || element.kind == Room.COMPLETE_BATHROOM) {
                     new IconShape(element)
                         .draw(ctx)
                         .drawIcon(ctx, element.kind,
@@ -125,6 +126,13 @@ export class House {
     deleteRoom(room: Room) {
         this.rooms = this.rooms.filter(function (element) {
             return room != element;
+        });
+    }
+
+    assignFloor() {
+        this.rooms.forEach(room => {
+            if (room.floorNumber == 1) room.setBaseFloor(this.firstFloor);
+            else room.setBaseFloor(this.secondFloor);
         });
     }
 }

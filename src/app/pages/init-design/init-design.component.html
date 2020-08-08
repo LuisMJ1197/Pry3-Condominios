@@ -1,4 +1,4 @@
-<app-header-vertical></app-header-vertical>
+<app-header-vertical-init></app-header-vertical-init>
 <div class="background">
     <div class="config-container">
         <div class="config-side">
@@ -15,11 +15,11 @@
                     </div>
                     <mat-radio-group aria-label="Select an option" [(ngModel)]="selectedSize">
                         <mat-radio-button *ngFor="let size of sizes" [value]="size" 
-                            [checked]="selectedSize == size" (change)="drawGround(size, true)">
+                            [checked]="selectedSize == size" (change)="drawGround(size, true);">
                             {{size}} m<sup>2</sup>
                         </mat-radio-button>
                     </mat-radio-group>
-                    <button class="button next-button" (click)="nextPhase()">
+                    <button class="button next-button" type="button" data-toggle="modal" data-target="#exampleModal" (click)=" changeArquitects();">
                         <span>Siguiente</span>
                     </button>
                 </div>
@@ -123,4 +123,36 @@
             <canvas #ghostcanvas class="canvas" style="display: none;"></canvas>
         </div>
     </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+aria-hidden="true" >
+<div class="modal-dialog modal-lg" style="width:90%">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Arquitectos disponibles</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body" style="padding: 16px;">
+            Se le mostrarán los arquitectos disponibles para el tamaño del terreno...
+            <table style="width: 100%; margin-top: 16px;">
+                <tr>
+                    <td style="font-weight: bold;"> Nombre </td>
+                    <td style="font-weight: bold;"> Experiencia </td>
+                    <td style="font-weight: bold;"> Nivel </td>
+                </tr>
+                <tr *ngFor="let architect of filteredArchitects" class="selectable-row" data-dismiss="modal" (click)="assignArchitect(architect)">
+                    <td >{{architect.firstname}} {{architect.lastname}} {{architect.lastname2}}</td>
+                    <td>{{architect.experienceyears}}</td>
+                    <td>{{architect.level}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </div>
+    </div>
+</div>
 </div>

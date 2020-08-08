@@ -1,4 +1,30 @@
 <!-- Header -->
 <div class="header" role="banner">
-    <img width="45px" height="auto" alt="ML Designer" src="../../../../assets/images/logo3.png" />
+    <div class="save-div">
+        <button mat-icon-button class="header-button save" (click)="save()"><i class="fa fa-save fa-lg"></i></button>
+        <button mat-icon-button class="header-button exit" data-toggle="modal" data-target="#exitConfirmation"><i class="fa fa-sign-out-alt fa-lg"></i></button>
+    </div>
+    <button mat-icon-button class="header-button user" (click)="showProfile()"><i class="fa fa-user fa-lg"></i></button>
+    <img class="logo" width="45px" height="auto" alt="ML Designer" src="../../../../assets/images/logo3.png" />
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exitConfirmation" tabindex="-1" role="dialog" aria-labelledby="exitConfirmationLabel"
+aria-hidden="true" >
+<div class="modal-dialog" style="width:90%">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="font-size: large;">¿Desea dejar de diseñar?</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body" style="padding: 16px;">
+            Cualquier cambio sin guardar será descartado.
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="exit()"> Salir </button>
+        </div>
+    </div>
+</div>
 </div>

@@ -8,6 +8,12 @@ import { Router } from '@angular/router';
 import { LabeledSizeShape } from 'src/app/logic/decorator/labeled-size-shape';
 import { BorderedShape } from 'src/app/logic/decorator/bordered-shape';
 import { Drawable } from 'src/app/logic/drawing/drawable';
+import { Architect } from 'src/app/logic/architect/architect';
+import { JuniorArchitect } from 'src/app/logic/architect/junior-architect';
+import { Senior1Architect } from 'src/app/logic/architect/senior1-architect';
+import { Senior2Architect } from 'src/app/logic/architect/senior2-architect';
+import { MainService } from 'src/app/services/main.service';
+import { Dimention } from 'src/app/logic/generalSettings/dimention';
 
 @Component({
   selector: 'app-init-design',
@@ -15,7 +21,7 @@ import { Drawable } from 'src/app/logic/drawing/drawable';
   styleUrls: ['./init-design.component.scss']
 })
 
-export class InitDesignComponent implements OnInit, CanvasMouseEventListener {
+export class InitDesignComponent implements OnInit, CanvasMouseEventListener, AfterContentInit {
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLCanvasElement>;
   @ViewChild('ghostcanvas', { static: true }) ghostcanvas: ElementRef<HTMLCanvasElement>;
   canvasHandler: CanvasHandler;
@@ -31,27 +37,58 @@ export class InitDesignComponent implements OnInit, CanvasMouseEventListener {
   secondFloorSize: number = 0;
   secondFloorSelected: boolean = false;
   static component: InitDesignComponent;
+  filteredArchitects: Architect[] = [];
   
-  constructor(private drawingService: DrawingService, private router: Router) {
+  constructor(private drawingService: DrawingService, private router: Router, private mainService: MainService) {
   
   }
-
+  
   registerChange(object: Drawable) {
-    
+    throw new Error("Method not implemented.");
+  }
+
+  ngAfterContentInit() {
+    this.changeArquitects();
+  }
+
+  assignArchitect(architect: Architect) {
+    this.ground.architect.firstname = architect.firstname;
+    this.ground.architect.lastname = architect.lastname;
+    this.ground.architect.lastname2 = architect.lastname2;
+    this.ground.architect.experienceyears = architect.experienceyears;
+    this.ground.architect.level = architect.level;
+    this.nextPhase();
+  }
+
+  changeArquitects() {
+    console.log(this.mainService.architects);
+    var junior = new JuniorArchitect("", "", "", 0);
+    var senior1 = new Senior1Architect("", "", "", 0);
+    var senior2 = new Senior2Architect("", "", "", 0);
+    junior.setNext(senior1);
+    senior1.setNext(senior2);
+    junior.design(this.ground);
+    this.filteredArchitects = this.mainService.architects.filter(archi => {
+      return archi.level == this.ground.architect.level;
+    });
   }
 
   ngOnInit(): void {
     this.canvasHandler = new CanvasHandler(this.canvas, this.ghostcanvas, this);
+    Dimention.meterPixelSize = 20;
+    Dimention.borderSize = 5;
     InitDesignComponent.component = this;
     this.ground = new Ground(this.selectedSize);
     this.ground.isDragable = false;
     this.firstFloor = this.ground.getHouse().getFirstFloor();
     this.secondFloor = this.ground.getHouse().getSecondFloor();
     this.drawGround(this.selectedSize, true);
+    this.changeArquitects();
     setInterval(this.refresh, 1);
   }
   
   drawGround(size: number, displayText: boolean) {
+    this.ground.size = size;
     this.ground.setWidth(Math.sqrt(size));
     this.ground.setHeight(Math.sqrt(size));
     const centerXY = this.canvasHandler.getCenter(this.ground.getPixelWidth(), this.ground.getPixelHeight());
@@ -77,8 +114,8 @@ export class InitDesignComponent implements OnInit, CanvasMouseEventListener {
       this.drawFirstFloor(false);
       this.drawSecondFloor(true);
       this.firstFloor.isSelected = false;
-      this.secondFloor.isSelected = false;
-      this.canvasHandler.setObjectListening(this.firstFloor);
+      this.secondFloor.isSelected = true;
+      this.canvasHandler.setObjectListening(this.secondFloor);
     }
   }
 

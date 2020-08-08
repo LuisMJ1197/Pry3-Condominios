@@ -5,6 +5,6 @@ export class SecondFloor extends Floor {
     constructor(width: number, height: number) {
         super(width, height);
         this.backgroundCcolor = Resource.secondBackgroundColor;
-        this.rol = "seconFloor";    
+        this.number = 2;
     }
 }

@@ -5,6 +5,9 @@ import { CanvasHandler } from '../view-logic/canvas-handler';
 import { Bathroom } from '../logic/modeling/bathroom';
 import { Room } from '../logic/modeling/room';
 import { SnapshotCareTaker } from '../logic/memento/snapshot-care-taker';
+import { Architect } from '../logic/architect/architect';
+import { JuniorArchitect } from '../logic/architect/junior-architect';
+import { Senior2Architect } from '../logic/architect/senior2-architect';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +31,7 @@ export class DrawingService {
 
   constructor() {
     this.editingGround = new Ground(500);
+    this.editingGround.architect = new Senior2Architect("Luis", "Molina", "Juárez", 2);
     this.editingGround.getHouse().getFirstFloor().setWidth(21);
     this.editingGround.getHouse().getFirstFloor().setHeight(21);
     this.editingGround.getHouse().getFirstFloor().setX(0.68);
