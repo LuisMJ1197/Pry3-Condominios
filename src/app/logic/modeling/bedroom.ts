@@ -1,8 +1,6 @@
 import { Room } from './room';
 import { Closet } from './closet';
-import { BorderedShape } from '../decorator/bordered-shape';
 import { Bathroom } from './bathroom';
-import { IconShape } from '../decorator/icon-shape';
 import { BedroomBalcony } from './bedroom-balcony';
 
 export class Bedroom extends Room {
@@ -32,20 +30,16 @@ export class Bedroom extends Room {
     drawCloset(ctx: CanvasRenderingContext2D) {
         if(this.hasCloset) {
             if (this.closet.isSelected) {
-                new BorderedShape(this.closet).draw(ctx);
+                this.closet.draw(ctx);
             } else {
                 this.closet.draw(ctx);
             }
         }
         if (this.hasBathroom) {
-            new IconShape(this.bathroom)
-                .draw(ctx)
-                .drawIcon(ctx, this.bathroom.kind, this.bathroom.getPixelWidth() - 5, this.bathroom.getPixelHeight() - 5, this.bathroom.angle);
+            this.bathroom.draw(ctx);
         }
         if (this.hasBalcony) {
-            new IconShape(this.balcony)
-                .draw(ctx)
-                .drawIcon(ctx, this.balcony.kind);
+            this.balcony.draw(ctx);
         }
     }
     

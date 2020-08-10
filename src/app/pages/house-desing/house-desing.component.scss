@@ -114,11 +114,15 @@
     margin-left: 8px;
   }
 
-::ng-deep.mat-expansion-panel,
+/*::ng-deep.mat-expansion-panel,
 ::ng-deep.mat-expansion-panel:hover,
 ::ng-deep.mat-expansion-panel.mat-expanded,
 ::ng-deep.mat-expansion-panel.mat-expanded:hover {
   background: var(--orange-soda);
+}*/
+
+.expansion-panel {
+    background: var(--orange-soda);
 }
 
 .button.set-principal {

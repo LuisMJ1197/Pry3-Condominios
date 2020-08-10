@@ -2,10 +2,8 @@ import { Floor } from './floor';
 import { FirstFloor } from './first-floor';
 import { SecondFloor } from './second-floor';
 import { Bedroom } from './bedroom';
-import { Bathroom } from './bathroom';
 import { Room } from './room';
 import { Stair } from './stair';
-import { IconShape } from '../decorator/icon-shape';
 import { ISnapshot } from '../memento/isnapshot';
 import { HouseSnapshot } from '../memento/house-snapshot';
 
@@ -87,15 +85,12 @@ export class House {
         this.rooms.forEach(element => {
             if ((element.baseFloor as Floor).number == number) {
                 if (element.kind == Room.BEDROOM) {
-                    new IconShape(element).draw(ctx).drawIcon(ctx, element.kind);
-                        (element as Bedroom).drawExtras(ctx);
+                    element.draw(ctx);
+                    (element as Bedroom).drawExtras(ctx);
                 } else if (element.kind == Room.SIMPLE_BATHROOM || element.kind == Room.COMPLETE_BATHROOM) {
-                    new IconShape(element)
-                        .draw(ctx)
-                        .drawIcon(ctx, element.kind,
-                        element.getPixelWidth() - 5, element.getPixelHeight() - 5, element.angle);
+                    element.draw(ctx);
                 } else {
-                    new IconShape(element).draw(ctx).drawIcon(ctx, element.kind);
+                    element.draw(ctx);
                 }
             }
         });

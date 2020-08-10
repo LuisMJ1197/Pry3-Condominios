@@ -1,36 +1,31 @@
-import { ShapeDecorator } from './shape-decorator';
+import { IDrawer } from './idrawer';
 import { IDrawable } from '../drawing/idrawable';
+import { CanvasHandler } from 'src/app/view-logic/canvas-handler';
 import { Resource } from '../generalSettings/resource';
+import { Dimention } from '../generalSettings/dimention';
 
-export class LabeledSizeShape extends ShapeDecorator {
+export class LabelDrawer implements IDrawer {
+    width: number = 0;
+    height: number = 0;
 
-    constructor(shape: IDrawable) {
-        super(shape);
-    }
+    draw(ctx: CanvasRenderingContext2D, drawable: IDrawable): void {
 
-    draw(ctx: CanvasRenderingContext2D): LabeledSizeShape {
-        this.shape.draw(ctx);
-        return this;
-    }
-
-    drawSizeLabel(ctx: CanvasRenderingContext2D, baseXY: number[]) {
-        var fromx = baseXY[0] - 20;
-        var fromy = baseXY[1];
-        var tox= baseXY[0] - 20;
-        var toy = baseXY[1] + this.shape.getPixelHeight();
+        var fromx = Dimention.centerXY[0] - 20;
+        var fromy = Dimention.centerXY[1];
+        var tox= Dimention.centerXY[0] - 20;
+        var toy = Dimention.centerXY[1] + drawable.getPixelHeight();
         this.drawLineWithArrows(ctx, fromx, fromy, tox, toy, 5, 8, true, true);
-        this.drawText(ctx, this.shape.getWidth().toFixed(2).toString().concat("mts"),
-            baseXY[0] - 20, (baseXY[1] + this.shape.getPixelHeight()/2), true);
+        this.drawText(ctx, drawable.getWidth().toFixed(2).toString().concat("mts"),
+            Dimention.centerXY[0] - 20, (Dimention.centerXY[1] + drawable.getPixelHeight()/2), true);
         
-        fromx = baseXY[0];
-        fromy = baseXY[1] - 20;
-        tox = baseXY[0] + this.shape.getPixelWidth();
-        toy = baseXY[1] - 20;
+        fromx = Dimention.centerXY[0];
+        fromy = Dimention.centerXY[1] - 20;
+        tox = Dimention.centerXY[0] + drawable.getPixelWidth();
+        toy = Dimention.centerXY[1] - 20;
         this.drawLineWithArrows(ctx, fromx, fromy, tox, toy, 5, 8, true, true);
-        this.drawText(ctx, this.shape.getHeight().toFixed(2).toString().concat("mts"),
-            (baseXY[0] + this.shape.getPixelWidth()/2), baseXY[1] - 20, false);        
+        this.drawText(ctx, drawable.getHeight().toFixed(2).toString().concat("mts"),
+            (Dimention.centerXY[0] + drawable.getPixelWidth()/2), Dimention.centerXY[1] - 20, false);
     }
-
     drawLineWithArrows(ctx: CanvasRenderingContext2D, x0,y0,x1,y1,aWidth,aLength,arrowStart,arrowEnd){
         var dx=x1-x0;
         var dy=y1-y0;
@@ -75,4 +70,5 @@ export class LabeledSizeShape extends ShapeDecorator {
         }
         ctx.restore();
     }
+    
 }

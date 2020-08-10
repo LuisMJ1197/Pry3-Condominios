@@ -33,11 +33,15 @@
 .addbathroompanel {
     margin-top: 1rem;
 }
-
+/*
 ::ng-deep.mat-expansion-panel.addbathroompanel,
 ::ng-deep.mat-expansion-panel.addbathroompanel:hover,
 ::ng-deep.mat-expansion-panel.mat-expanded.addbathroompanel,
 ::ng-deep.mat-expansion-panel.mat-expanded.addbathroompanel:hover {
+    background: var(--gunmetal);
+}*/
+
+.addbathroompanel {
     background: var(--gunmetal);
 }
 

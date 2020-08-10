@@ -8,12 +8,12 @@ import { CondoHouse } from '../logic/condo/condo-house';
 import { ServerService } from './server.service';
 import { Ground } from '../logic/modeling/ground';
 import { Stair } from '../logic/modeling/stair';
+import { Owner } from '../logic/condo/owner';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CondoService {
-
   condoProjects: CondoProject[] = [];
   condoEditing: CondoProject;
   isAdding: boolean = false;
@@ -31,7 +31,7 @@ export class CondoService {
     this.condoEditing = condo;
     this.condoEditing.blocks.push(new Block("A"));
 
-    var ground = new CondoHouse(500);
+    var ground = new CondoHouse(new Ground(500));
     ground.getHouse().getFirstFloor().setWidth(21);
     ground.getHouse().getFirstFloor().setHeight(21);
     ground.getHouse().getFirstFloor().setX(0.68);
@@ -72,7 +72,8 @@ export class CondoService {
     this.condoEditing.blocks[0].addHouse(ground);
     this.condoEditing.blocks[0].addHouse(ground);
     this.condoEditing.blocks[0].addHouse(ground);
-    this.condoEditing.blocks[0].addHouse(ground);*/
+    this.condoEditing.blocks[0].addHouse(ground);
+    */
   }
 
   loadCondoProjects() {
@@ -83,12 +84,19 @@ export class CondoService {
         condo.commonAreas.forEach(area => {
           nCondo.commonAreas[area.kind].cant = area.cant
         });
+        if (condo.blocks != undefined) {
+          
         condo.blocks.forEach(block => {
           var nBlock = new Block(block.letter);
-          block.houses.forEach(element => {
-            var ground = new Ground(
+          block.houses.forEach(design => {
+            var element = design.design;
+            var designN = new Ground(
               element.size);
-            ground._id = element._id;
+            var ground = new CondoHouse(designN);
+            if (element.owner != undefined) {
+              ground.setOwner(new Owner(element.owner.firstname, element.owner.lastname1, element.owner.lastname2));
+            }
+
             ground.getHouse().hasSecondFloor = element.house.hasSecondFloor;
             ground.getHouse().hasHotWater = element.house.hasHotWater;
             ground.getHouse().getFirstFloor().setWidth(element.house.firstFloor.width);
@@ -153,6 +161,7 @@ export class CondoService {
           });
           nCondo.blocks.push(nBlock);
           });
+        }
           this.condoProjects.push(nCondo);
       })
     });

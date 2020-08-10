@@ -6,12 +6,18 @@
             <input type="text" name="search" [(ngModel)]="searchText" placeholder="Búsqueda por nombre.." (input)="filter()"></div>
     </div>
     <div class="condo-projects">
-        <div class="condo-block" *ngFor="let condo of filteredCondos" (click)="editCondo(condo)">
-            <div class="condo-block-content">
+        <div class="condo-block" *ngFor="let condo of filteredCondos">
+            <div class="condo-block-content info">
                 <h3>{{condo.name}}</h3>
                 <h4>{{condo.provincia}},
                 {{condo.canton}},
                 {{condo.distrito}}</h4>
+            </div>
+            <div class="condo-block-content actions">
+                <div class="block-design-access">
+                    <button mat-flat-button class="action-button" style="margin-top: 16px;" (click)="editCondo(condo)">Editar</button>
+                    <button mat-flat-button class="action-button" (click)="deleteCondo(condo)">Eliminar</button>
+                </div>
             </div>
         </div>
         <div class="condo-block" (click)="goToAdding()">

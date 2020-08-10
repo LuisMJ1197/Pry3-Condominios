@@ -5,6 +5,7 @@ import { IOriginator } from '../memento/ioriginator';
 import { RoomSnapshot } from '../memento/room-snapshot';
 import { jsonIgnore } from 'json-ignore';
 import { IPrototype } from '../prototype/iprototype';
+import { IDrawer } from '../bridge/idrawer';
 
 export abstract class Drawable implements IDrawable, IOriginator {
     @jsonIgnore()
@@ -15,7 +16,9 @@ export abstract class Drawable implements IDrawable, IOriginator {
     limitRight: number = 0;
     @jsonIgnore()
     limitBottom: number = 0;
-    
+    @jsonIgnore()
+    drawAPI: IDrawer;
+
     isDragable: boolean = true;
     @jsonIgnore()
     isSelected: boolean = false;
@@ -25,9 +28,14 @@ export abstract class Drawable implements IDrawable, IOriginator {
     dy: number = 0;
     angle: number = 0;
     @jsonIgnore()
-    baseFloor: Drawable;
+    baseFloor: IDrawable;
+    kind: number = 0;
 
     constructor(public width: number, public height: number, public x: number, public y: number) {
+    }
+
+    getAngle(): number {
+        return this.angle;
     }
 
     public getDX(): number {
@@ -42,6 +50,14 @@ export abstract class Drawable implements IDrawable, IOriginator {
 
     abstract getCenter(): number[];
     
+    getKind(): number {
+        return this.kind;
+    }
+
+    getSelected(): boolean {
+        return this.isSelected;
+    }
+
     public getX(): number {
         return this.x;
     }
@@ -115,7 +131,7 @@ export abstract class Drawable implements IDrawable, IOriginator {
     }
 
     
-    setBaseFloor(floor: Drawable): void {
+    setBaseFloor(floor: IDrawable): void {
         this.baseFloor = floor;
     }
 

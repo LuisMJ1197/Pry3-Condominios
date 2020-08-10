@@ -4,18 +4,17 @@ import { CanvasMouseEventListener } from 'src/app/view-logic/canvas-mouse-event-
 import { DrawingService } from 'src/app/services/drawing.service';
 import { Ground } from 'src/app/logic/modeling/ground';
 import { Dimention } from 'src/app/logic/generalSettings/dimention';
-import { LabeledSizeShape } from 'src/app/logic/decorator/labeled-size-shape';
-import { BorderedShape } from 'src/app/logic/decorator/bordered-shape';
 import { House } from 'src/app/logic/modeling/house';
 import { Floor } from 'src/app/logic/modeling/floor';
 import { Bedroom } from 'src/app/logic/modeling/bedroom';
-import { IconShape } from 'src/app/logic/decorator/icon-shape';
 import { Room } from 'src/app/logic/modeling/room';
 import { Drawable } from 'src/app/logic/drawing/drawable';
 import { ServerService } from 'src/app/services/server.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { InitDesignComponent } from '../init-design/init-design.component';
+import { DesignsPageComponent } from '../designs-page/designs-page.component';
 
 @Component({
   selector: 'app-house-desing',
@@ -214,48 +213,38 @@ export class HouseDesingComponent implements OnInit, CanvasMouseEventListener {
     this.canvasHandler.setListening(null);
   }
 
-  refreshCanvas() {
+  refreshCanvas() {    
     this.canvasHandler.clearCanvas(this.canvasHandler.getCTX());
     this.canvasHandler.drawGrid();
-    const centerXY = this.canvasHandler.getCenter(this.editingGround.getPixelWidth(), this.editingGround.getPixelHeight());
-    new LabeledSizeShape(this.editingGround)
-      .draw(this.canvasHandler.getCTX())
-      .drawSizeLabel(this.canvasHandler.getCTX(), centerXY);
-    new BorderedShape(this.editingGround.getHouse().getFirstFloor())
-      .draw(this.canvasHandler.getCTX());
-    this.editingGround.getHouse().drawRooms(this.canvasHandler.getCTX(), this.editingGround.getHouse().getFirstFloor().number);  
+    var ctx = this.canvasHandler.getCTX();
+    Dimention.centerXY = CanvasHandler.canvasHandler.getCenter(this.editingGround.getPixelWidth(), this.editingGround.getPixelHeight());
+    this.editingGround.draw(ctx);
+    this.editingGround.getHouse().getFirstFloor().draw(ctx);
+    this.editingGround.getHouse().drawRooms(ctx, this.editingGround.getHouse().getFirstFloor().number);
     if (this.house.hasSecondFloor) {
       this.house.getSecondFloor().calculateDxDy();
     }
     if(this.floorsShowInfo.second || this.drawingService.addingBedroom.floorNumber == 2 || this.drawingService.addingBathroom.floorNumber == 2) {
-      new BorderedShape(this.editingGround.getHouse().getSecondFloor())
-        .draw(this.canvasHandler.getCTX());
-        this.editingGround.getHouse().drawRooms(this.canvasHandler.getCTX(), this.editingGround.getHouse().getSecondFloor().number); 
+      this.editingGround.getHouse().getSecondFloor().draw(ctx);
+      this.editingGround.getHouse().drawRooms(ctx, this.editingGround.getHouse().getSecondFloor().number); 
     }
     if (this.house.hasStair()) {
       this.house.stair.draw(this.canvasHandler.getCTX());
     }
     // If adding bedroom
     if (this.drawingService.isAddingBedroom) {
-      new IconShape(this.drawingService.addingBedroom)
-        .draw(this.canvasHandler.getCTX())
-        .drawIcon(this.canvasHandler.getCTX(), this.drawingService.addingBedroom.kind);
+      this.drawingService.addingBedroom.draw(ctx);
       this.drawingService.addingBedroom.drawExtras(this.canvasHandler.getCTX());
     }
 
     // If adding bathroom
     if (this.drawingService.isAddingBathroom) {
-      new IconShape(this.drawingService.addingBathroom)
-        .draw(this.canvasHandler.getCTX())
-        .drawIcon(this.canvasHandler.getCTX(), this.drawingService.addingBathroom.kind,
-          this.drawingService.addingBathroom.getPixelWidth() - 5, this.drawingService.addingBathroom.getPixelHeight() - 5, this.drawingService.addingBathroom.angle);
+      this.drawingService.addingBathroom.draw(ctx);
     }
 
     // If adding room
     if (this.drawingService.isAddingRoom) {
-      new IconShape(this.drawingService.addingRoom)
-        .draw(this.canvasHandler.getCTX())
-        .drawIcon(this.canvasHandler.getCTX(), this.drawingService.addingRoom.kind);
+      this.drawingService.addingRoom.draw(ctx);
     }
   }
 
@@ -264,6 +253,10 @@ export class HouseDesingComponent implements OnInit, CanvasMouseEventListener {
   }
 
   exit() {
+    if (DesignsPageComponent.component != null) {
+      setInterval(DesignsPageComponent.component.prepareImages, 20);
+      this.editingGround.createImage(DesignsPageComponent.component.canvas.nativeElement);
+    }
     this.router.navigate(["/designs-page"]);
   }
 

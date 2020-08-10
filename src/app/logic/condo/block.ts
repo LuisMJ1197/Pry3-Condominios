@@ -1,9 +1,8 @@
 import { CondoHouse } from './condo-house';
-import { Ground } from '../modeling/ground';
 
 export class Block {
     letter: string;
-    houses: Ground[] = [];
+    houses: CondoHouse[] = [];
 
     constructor(letter: string) {
         this.letter = letter;
@@ -12,7 +11,7 @@ export class Block {
     setHousesNumber () {
     }
 
-    addHouse(ground: Ground) {
+    addHouse(ground: CondoHouse) {
         this.houses.push(ground);
     }
 }

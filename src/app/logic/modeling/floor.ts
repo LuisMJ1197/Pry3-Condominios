@@ -1,8 +1,4 @@
 import { DrawableFloor } from '../drawing/drawable-floor';
-import { Bedroom } from './bedroom';
-import { Bathroom } from './bathroom';
-import { IconShape } from '../decorator/icon-shape';
-import { Room } from './room';
 import { ISnapshot } from '../memento/isnapshot';
 import { FloorSnapshot } from '../memento/floor-snapshot';
 

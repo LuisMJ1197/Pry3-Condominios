@@ -19,6 +19,14 @@
     vertical-align: middle;
 }
 
+.condo-block:hover .actions {
+    display: block;
+}
+
+.condo-block:hover .info {
+    display: none;
+}
+
 .condo-block-content {
     cursor: pointer;
     text-align: center;
@@ -33,6 +41,12 @@
     -webkit-box-shadow: 5px 5px 2.5px 0px rgba(0,0,0,0.75);
     -moz-box-shadow: 5px 5px 2.5px 0px rgba(0,0,0,0.75);
     box-shadow: 5px 5px 2.5px 0px rgba(0,0,0,0.75);
+}
+
+.condo-block-content.actions {
+    color: var(--gunmetal);
+    background: white;
+    display: none;
 }
 
 .condo-block-content:hover {
@@ -83,4 +97,11 @@
 }
 .search > * {
     float: left;
+}
+.action-button ~ .action-button {
+    margin-top: 16px;
+}
+.action-button {
+    width: 80%;
+    margin: 0 auto;
 }

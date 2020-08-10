@@ -1,8 +1,8 @@
 export interface IDrawable {
     draw(ctx: CanvasRenderingContext2D): void;
     
-    /*getCenter(): number[];
-    genLimits(): void;
+    getCenter(): number[];
+    /*genLimits(): void;
     */
     isSelected: boolean;
     getWidth(): number;
@@ -14,7 +14,9 @@ export interface IDrawable {
 
     getDX(): number;
     getDY(): number;
-
+    getKind(): number;
+    getAngle(): number;
+    getSelected(): boolean;
     /*getX(): number;
     getY(): number;*/
 

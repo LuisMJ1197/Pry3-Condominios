@@ -9,6 +9,8 @@ import { ServerService } from 'src/app/services/server.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonArea } from 'src/app/logic/condo/common-area';
+import { CondoProject } from 'src/app/logic/condo/condo-project';
+import { Owner } from 'src/app/logic/condo/owner';
 
 @Component({
   selector: 'app-condo-editing',
@@ -26,7 +28,10 @@ export class CondoEditingComponent implements OnInit {
   bloques: string[] = ["A", "B", "C", "D", "E", "F", "G", "H"];
   selectedCantones: any = [];
   selectedDistrito: any = [];
+  selectedHouse: CondoHouse;
   commonAreas: string[] = CommonArea.commonAreas;
+  owner: Owner = new Owner("", "", "");
+
   constructor(private snack: MatSnackBar, private router: Router, private server: ServerService,public condoService: CondoService, public mainservice: MainService) { }
 
   ngOnInit(): void {
@@ -76,7 +81,7 @@ export class CondoEditingComponent implements OnInit {
   addBlock() {
     var newBlock = new Block(this.bloques[this.condoService.condoEditing.blocks.length]);
     for (var i = 0; i < this.selectedCantHouses; i++) {
-      newBlock.addHouse(this.selectedDesign.clone());
+      newBlock.addHouse(new CondoHouse(this.selectedDesign.clone()));
     }
     this.condoService.condoEditing.blocks.push(newBlock);
     this.selectedDesign = null;
@@ -106,11 +111,22 @@ export class CondoEditingComponent implements OnInit {
   }
 
   save() {
+    if (this.condoService.condoEditing.name == ""
+      || this.condoService.condoEditing.provincia == ""
+      || this.condoService.condoEditing.canton == ""
+      || this.condoService.condoEditing.distrito == ""
+      || this.condoService.condoEditing.contactname ==""
+      || this.condoService.condoEditing.phonenumber == "") {
+        alert("Debe ingresar los datos del proyecto");
+        return;
+    }
     this.snack.openFromComponent(SavingSnack, {
       duration: 3 * 1000,
     });
 
+    console.log(this.condoService.condoEditing);
     if (this.condoService.condoEditing._id == null) {
+      
       this.server.saveCondoProject(this.condoService.condoEditing).subscribe(data => {
         if ((data as any).ok == 1) {
           console.log((data as any).data);
@@ -123,6 +139,27 @@ export class CondoEditingComponent implements OnInit {
         console.log(data);
       });
     }
+    this.router.navigate(["condo-management"]);
+  }
+
+  showOwner(house: CondoHouse) {
+    this.selectedHouse = house;
+    if (house.owner == null) {
+      this.owner = new Owner("", "", "");  
+      return;
+    }
+    this.owner.firstname = house.owner.firstname;
+    this.owner.lastname1 = house.owner.lastname1;
+    this.owner.lastname2 = house.owner.lastname2;
+  }
+
+  setOwner() {
+    this.selectedHouse.setOwner(new Owner(this.owner.firstname, this.owner.lastname1, this.owner.lastname2));
+    this.owner = new Owner("", "", "");
+  }
+
+  
+  exit() {
     this.router.navigate(["condo-management"]);
   }
 }

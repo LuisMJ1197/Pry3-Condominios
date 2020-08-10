@@ -74,8 +74,8 @@
                         <mat-panel-description>
                         </mat-panel-description>
                     </mat-expansion-panel-header>
-                    <div class="block-house" *ngFor="let house of block.houses" style="color: var(--gunmetal)">
-                        <img style="width: 112px; height: 112px;" src="{{house.image}}">
+                    <div class="block-house" *ngFor="let house of block.houses" style="color: var(--gunmetal); cursor: pointer;" data-toggle="modal" data-target="#setOwner" (click)="showOwner(house)">
+                        <img style="width: 112px; height: 112px;" src="{{house.getImage()}}">
                     </div>
                     <button mat-flat-button style="margin-top: 16px; outline: none; color: white; width: 50%; margin-left: 25%;" (click)="deleteBlock(block)">Eliminar</button>
                 </mat-expansion-panel>
@@ -166,10 +166,50 @@
 
         <div style="width: 100%; position: relative; margin-top: 16px;">
             <div class="save-buttons" style="position: absolute; width: 60%; height: 50px; left: 0; right: 0; margin-left: auto; margin-right: auto;">
-                <button mat-flat-button style="width: 45%;">Cancelar</button>
+                <button mat-flat-button style="width: 45%;" (click)="exit()">Cancelar</button>
                 <button mat-flat-button style="width: 45%; margin-left: 10%;" class="button add" (click)="save()">Guardar</button>
             </div>
         </div>
         
     </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="setOwner" tabindex="-1" role="dialog" aria-labelledby="exitConfirmationLabel"
+aria-hidden="true" >
+<div class="modal-dialog" style="width:90%">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel" style="font-size: large;">Asignar dueño</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="column-2">
+                    <label>
+                        Nombre
+                        <input placeholder="¿Cuál es el nombre del dueño" tabindex="1" name="name" [(ngModel)]="owner.firstname" />
+                    </label>
+                </div>
+                <div class="column-2">
+                    <label>
+                        Primer apellido
+                        <input placeholder="¿Cuál es el primer apellido?" tabindex="1" name="name" [(ngModel)]="owner.lastname1" />
+                    </label>
+                </div>
+                <div class="column-2">
+                    <label>
+                        Segundo apellido
+                        <input placeholder="¿Cuál es el segundo apellido?" tabindex="1" name="name" [(ngModel)]="owner.lastname2" />
+                    </label>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="setOwner()"> Guardar </button>
+        </div>
+    </div>
+</div>
 </div>

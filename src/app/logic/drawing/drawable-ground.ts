@@ -4,6 +4,7 @@ import { Dimention } from '../generalSettings/dimention';
 import { Drawable } from './drawable';
 import { ObjectConfigurator } from 'src/app/view-logic/object-configurator';
 import { jsonIgnore } from 'json-ignore';
+import { LabelDrawer } from '../bridge/label-drawer';
 
 export abstract class DrawableGround extends Drawable {
     @jsonIgnore()
@@ -11,15 +12,17 @@ export abstract class DrawableGround extends Drawable {
     @jsonIgnore()
     protected borderColor: string = Resource.groundBorderColor;
     @jsonIgnore()
-    protected showArea: boolean = false;
+    protected showArea: boolean = true;
 
     constructor(public size: number, x: number, y: number) {
         super(Math.sqrt(size), Math.sqrt(size), x, y);
+        this.drawAPI = new LabelDrawer();
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
         ObjectConfigurator.configGround(ctx);
         ctx.fillRect(this.dx, this.dy, this.getPixelWidth(), this.getPixelHeight());
+        if (this.showArea) this.drawAPI.draw(ctx, this);
     }
 
     displayAreaText(ctx: CanvasRenderingContext2D) {

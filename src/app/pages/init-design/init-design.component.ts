@@ -5,8 +5,6 @@ import { Floor } from 'src/app/logic/modeling/floor';
 import { CanvasMouseEventListener } from 'src/app/view-logic/canvas-mouse-event-listener';
 import { DrawingService } from 'src/app/services/drawing.service';
 import { Router } from '@angular/router';
-import { LabeledSizeShape } from 'src/app/logic/decorator/labeled-size-shape';
-import { BorderedShape } from 'src/app/logic/decorator/bordered-shape';
 import { Drawable } from 'src/app/logic/drawing/drawable';
 import { Architect } from 'src/app/logic/architect/architect';
 import { JuniorArchitect } from 'src/app/logic/architect/junior-architect';
@@ -181,17 +179,16 @@ export class InitDesignComponent implements OnInit, CanvasMouseEventListener, Af
   refresh(): void {
     var context = InitDesignComponent.component;
     context.canvasHandler.clearCanvas(context.canvasHandler.ctx);
-    new LabeledSizeShape(context.ground)
-      .draw(context.canvasHandler.ctx)
-      .drawSizeLabel(context.canvasHandler.ctx, context.canvasHandler.getCenter(context.ground.getPixelWidth(), context.ground.getPixelHeight()));
+    Dimention.centerXY = CanvasHandler.canvasHandler.getCenter(context.ground.getPixelWidth(), context.ground.getPixelHeight());
+    context.ground.draw(context.canvasHandler.ctx);
     //context.ground.draw(context.canvasHandler.ctx);
     if (context.activePhase >= 1) {
-      new BorderedShape(context.firstFloor).draw(context.canvasHandler.ctx);
+      context.firstFloor.draw(context.canvasHandler.ctx);
       //context.firstFloor.draw(context.canvasHandler.ctx);
     }
     if (context.activePhase == 2) {
       if (context.secondFloorSelected) {
-        new BorderedShape(context.secondFloor).draw(context.canvasHandler.ctx);
+        context.secondFloor.draw(context.canvasHandler.ctx);
         //context.secondFloor.draw(context.canvasHandler.ctx);
       }
     }

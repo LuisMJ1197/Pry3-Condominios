@@ -3,6 +3,7 @@ import { Drawable } from './drawable';
 import { ObjectConfigurator } from 'src/app/view-logic/object-configurator';
 import { ISnapshot } from '../memento/isnapshot';
 import { jsonIgnore } from 'json-ignore';
+import { IconDrawer } from '../bridge/icon-drawer';
 
 export abstract class DrawableRoom extends Drawable {
     @jsonIgnore()
@@ -15,6 +16,7 @@ export abstract class DrawableRoom extends Drawable {
 
     constructor(width: number, height: number, x: number, y: number) {
         super(width, height, x, y);
+        this.drawAPI = new IconDrawer();
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
@@ -23,6 +25,7 @@ export abstract class DrawableRoom extends Drawable {
         ObjectConfigurator.configRoom(ctx, Resource.roomFill[this.kind]);
         ctx.fillRect(this.dx, this.dy, this.getPixelWidth(), this.getPixelHeight());
         ctx.restore();
+        this.drawAPI.draw(ctx, this);
     }
 
     save(): ISnapshot {

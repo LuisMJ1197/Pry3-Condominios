@@ -1,6 +1,6 @@
 <app-header-vertical></app-header-vertical>
 <div style="width: calc(100% - 60px); margin-left: 60px;">
-    <div class="design-content" (click)="showingProfile = false">
+    <div class="design-content">
         <div class="tool-content">
             <mat-tab-group (selectedIndexChange)="changeTab($event.value);">
                 <mat-tab>
@@ -9,7 +9,7 @@
                     </ng-template>
                     <div class="tab-content">
                         <mat-accordion>
-                            <mat-expansion-panel (opened)="changeSelectedFloor(1);">
+                            <mat-expansion-panel class="expansion-panel" (opened)="changeSelectedFloor(1);">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         Primer piso
@@ -31,38 +31,30 @@
                                 <div class="phase-explanation" *ngIf="house.hasSecondFloor">
                                     <div class="phase-p">Seleccione el tipo de escalera</div>
                                 </div>
-                                <mat-radio-group aria-label="Select an option" [(ngModel)]="house.stair.kind" *ngIf="house.hasSecondFloor">
-                                    <mat-radio-button 
-                                        [value]="0"
-                                        [checked]="house.stair.kind == 0">
+                                <mat-radio-group aria-label="Select an option" [(ngModel)]="house.stair.kind"
+                                    *ngIf="house.hasSecondFloor">
+                                    <mat-radio-button [value]="0" [checked]="house.stair.kind == 0">
                                         Ninguna
                                     </mat-radio-button>
-                                    <mat-radio-button 
-                                        [value]="1"
-                                        [checked]="house.stair.kind == 1">
+                                    <mat-radio-button [value]="1" [checked]="house.stair.kind == 1">
                                         Recta
                                     </mat-radio-button>
-                                    <mat-radio-button 
-                                        [value]="2"
-                                        [checked]="house.stair.kind == 2">
+                                    <mat-radio-button [value]="2" [checked]="house.stair.kind == 2">
                                         En U
                                     </mat-radio-button>
-                                    <mat-radio-button 
-                                        [value]="3"
-                                        [checked]="house.stair.kind == 3">
+                                    <mat-radio-button [value]="3" [checked]="house.stair.kind == 3">
                                         Espiral
                                     </mat-radio-button>
                                 </mat-radio-group>
                                 <div class="buttons-div">
-                                    <button mat-raised-button class="button add" 
-                                        [disabled]="house.stair.kind == 0"
+                                    <button mat-raised-button class="button add" [disabled]="house.stair.kind == 0"
                                         (click)="moveStair()">{{drawingService.isMovingStair ? 'Dejar de mover escalera' : 'Mover escalera'}}</button>
                                 </div>
                                 <button mat-raised-button class="button turn" (click)="rotateStair()">
                                     <mat-icon>rotate_right</mat-icon>
                                 </button>
                             </mat-expansion-panel>
-                            <mat-expansion-panel [disabled]="!editingGround.getHouse().hasSecondFloor"
+                            <mat-expansion-panel class="expansion-panel" [disabled]="!editingGround.getHouse().hasSecondFloor"
                                 (opened)="changeSelectedFloor(2);">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
@@ -92,7 +84,7 @@
                     </ng-template>
                     <div class="tab-content">
                         <mat-accordion>
-                            <mat-expansion-panel *ngFor="let bedroom of house.getBedrooms()"
+                            <mat-expansion-panel class="expansion-panel" *ngFor="let bedroom of house.getBedrooms()"
                                 (opened)="selectRoom(bedroom);" (closed)="unselectRoom(bedroom)">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
@@ -103,7 +95,10 @@
                                         {{bedroom.isMainBedroom ? ' - Principal' : ' '}}
                                     </div>
                                 </mat-expansion-panel-header>
-                                <button mat-mini-fab color="var(--gunmetal)" class="delete-button" (click)="deleteRoom(bedroom)"> <mat-icon>delete</mat-icon></button>
+                                <button mat-mini-fab color="var(--gunmetal)" class="delete-button"
+                                    (click)="deleteRoom(bedroom)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
                                 <table style="width: 50%;">
                                     <tr>
                                         <td>Ancho</td>
@@ -141,7 +136,7 @@
                     </ng-template>
                     <div class="tab-content">
                         <mat-accordion>
-                            <mat-expansion-panel *ngFor="let bathroom of house.getBathrooms()"
+                            <mat-expansion-panel class="expansion-panel" *ngFor="let bathroom of house.getBathrooms()"
                                 (opened)="selectRoom(bathroom);" (closed)="unselectRoom(bathroom);">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
@@ -151,11 +146,14 @@
                                         {{bathroom.floorNumber == 1 ? 'Primer piso' : 'Segundo piso'}}
                                     </div>
                                 </mat-expansion-panel-header>
-                                <button mat-mini-fab color="var(--gunmetal)" class="delete-button" (click)="deleteRoom(bathroom)"> <mat-icon>delete</mat-icon></button>
+                                <button mat-mini-fab color="var(--gunmetal)" class="delete-button"
+                                    (click)="deleteRoom(bathroom)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
                                 <table style="width: 50%;">
                                     <tr>
                                         <td>Tipo</td>
-                                        <td>{{bathroom.kind == 0? 'Baño medio' : 'Baño completo'}} mts</td>
+                                        <td>{{bathroom.kind == 0? 'Baño medio' : 'Baño completo'}}</td>
                                     </tr>
                                 </table>
                             </mat-expansion-panel>
@@ -170,17 +168,20 @@
                     </ng-template>
                     <div class="tab-content">
                         <mat-accordion>
-                            <mat-expansion-panel *ngFor="let room of house.getRooms()"
-                                (opened)="selectRoom(room);" (closed)="unselectRoom(room);">
+                            <mat-expansion-panel class="expansion-panel" *ngFor="let room of house.getRooms()" (opened)="selectRoom(room);"
+                                (closed)="unselectRoom(room);">
                                 <mat-expansion-panel-header>
                                     <mat-panel-title>
                                         {{house.getName(room)}} - {{rooms[room.kind - 3].name}}
                                     </mat-panel-title>
-                                     <div class="panel-description">
+                                    <div class="panel-description">
                                         {{room.floorNumber == 1 ? 'Primer piso' : 'Segundo piso'}}
                                     </div>
                                 </mat-expansion-panel-header>
-                                <button mat-mini-fab color="var(--gunmetal)" class="delete-button" (click)="deleteRoom(room)"> <mat-icon>delete</mat-icon></button>
+                                <button mat-mini-fab color="var(--gunmetal)" class="delete-button"
+                                    (click)="deleteRoom(room)">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
                                 <table style="width: 50%;">
                                     <tr>
                                         <td>Ancho</td>
@@ -202,7 +203,7 @@
                         <i class="fa fa-tint fa-2x"></i>
                     </ng-template>
                     <div class="tab-content">
-                        <mat-radio-group aria-label="Select an option" [(ngModel)]="house.hasHotWater">
+                        <mat-radio-group name="house-water" aria-label="Select an option" [(ngModel)]="house.hasHotWater">
                             <mat-radio-button [value]="false" [checked]="house.hasHotWater == false">
                                 Servicio de agua fría
                                 <i class="fa fa-tint" style="margin-left: 16px; color: var(--gunmetal);"></i>
@@ -240,9 +241,10 @@
         </div>
     </div>
     <div class="card" [ngClass]="{'show-card': showingProfile}">
-        <h1>{{editingGround.architect.firstname}} {{editingGround.architect.lastname}} {{editingGround.architect.lastname2}}</h1>
+        <h1>{{editingGround.architect.firstname}} {{editingGround.architect.lastname}}
+            {{editingGround.architect.lastname2}}</h1>
         <p class="title">{{editingGround.architect.level}}</p>
-        <p>{{editingGround.architect.experienceyears}} {{editingGround.architect.experienceyears == 1 ? ' año de experiencia' : ' años de experiencia'}} </p>
-      </div>
+        <p>{{editingGround.architect.experienceyears}}
+            {{editingGround.architect.experienceyears == 1 ? ' año de experiencia' : ' años de experiencia'}} </p>
+    </div>
 </div>
-

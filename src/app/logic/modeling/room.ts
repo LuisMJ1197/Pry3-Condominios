@@ -20,7 +20,6 @@ export class Room extends DrawableRoom {
     public static WASHING_ROOM:number = 13;
     public static MAIN_BEDROOM: number = 14;
     public static sCantRooms: number = -1;
-    kind: number = 0;
     floorNumber: number = 1;
     
     constructor(width: number, height: number, kind: number) {

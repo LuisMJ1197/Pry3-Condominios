@@ -2,6 +2,7 @@ import { Resource } from '../generalSettings/resource';
 import { Drawable } from './drawable';
 import { ObjectConfigurator } from 'src/app/view-logic/object-configurator';
 import { jsonIgnore } from 'json-ignore';
+import { BorderDrawer } from '../bridge/border-drawer';
 
 export abstract class DrawableFloor extends Drawable {
     @jsonIgnore()
@@ -13,6 +14,7 @@ export abstract class DrawableFloor extends Drawable {
     number = 1;
     constructor(width: number, height: number, x: number, y: number) {
         super(width, height, x, y);
+        this.drawAPI = new BorderDrawer();
     }
 
     draw(ctx: CanvasRenderingContext2D): void {
@@ -25,5 +27,6 @@ export abstract class DrawableFloor extends Drawable {
         }
         ctx.fillRect(this.dx, this.dy, this.getPixelWidth(), this.getPixelHeight());
         ctx.restore();
+        this.drawAPI.draw(ctx, this);
     }
 }

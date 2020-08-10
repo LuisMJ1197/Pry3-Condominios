@@ -34,10 +34,7 @@
     margin-top: 1rem;
 }
 
-::ng-deep.mat-expansion-panel.addpanel,
-::ng-deep.mat-expansion-panel.addpanel:hover,
-::ng-deep.mat-expansion-panel.mat-expanded.addpanel,
-::ng-deep.mat-expansion-panel.mat-expanded.addpanel:hover {
+.addpanel {
     background: var(--gunmetal);
 }
 

@@ -3,6 +3,7 @@ import { Resource } from '../generalSettings/resource';
 import { Dimention } from '../generalSettings/dimention';
 import { ISnapshot } from '../memento/isnapshot';
 import { RotateSnapshot } from '../memento/rotate-snapshot';
+import { IDrawable } from '../drawing/idrawable';
 
 export class Stair extends Drawable {
     static NONE: number = 0;
@@ -15,7 +16,7 @@ export class Stair extends Drawable {
         [3, 3],
         [2, 2]
     ];
-    kind: number;
+    kind: number = 0;
     angle: number = 0;
 
     constructor(kind: number) {
@@ -70,7 +71,7 @@ export class Stair extends Drawable {
         this.dy = this.getBaseFloor().getDY() + (this.y * Dimention.meterPixelSize);
     }
     
-    public getBaseFloor(): Drawable {
+    public getBaseFloor(): IDrawable {
         return this.baseFloor;
     }
 

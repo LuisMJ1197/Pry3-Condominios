@@ -3,6 +3,7 @@ import { IOriginator } from './ioriginator';
 export class FloorSnapshot {
     state: any;
     originator: IOriginator;
+    
     constructor(originator: IOriginator, x: number, y: number, width: number, height: number) {
         this.state = {
             x: x,

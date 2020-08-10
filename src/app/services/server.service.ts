@@ -83,6 +83,7 @@ export class ServerService {
   }
 
   saveCondoProject(condoProject: CondoProject) {
+    console.log(JSON.stringify(condoProject, jsonIgnoreReplacer));
     let options = {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     }
@@ -100,6 +101,16 @@ export class ServerService {
         
     );
   }
+
+  deleteCondoProject(condoProject: CondoProject) {
+    let options = {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    }
+    return this.http.post(this.URL.concat("deletecondoproject"), {_id: condoProject._id}, options).pipe(
+        
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
